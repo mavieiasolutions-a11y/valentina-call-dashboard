@@ -589,8 +589,8 @@ select email, nombre, rol from public.equipo;"></code></pre><button class="boton
     <div class="paso-cabecera"><h3><span class="paso-id">6.4</span>Comprobar las dos direcciones</h3></div>
     <p>Cuando Miguel te conteste:</p>
     <ol>
-      <li>Abre <a data-plantilla-href="«url_crm»" href="https://valentina-crm.pages.dev" target="_blank" rel="noopener noreferrer"><span data-plantilla="«url_crm»">https://valentina-crm.pages.dev</span></a>. Verás el CRM con la banda amarilla <strong>"Modo prueba"</strong>. Es lo normal en este momento: aún no lo has conectado a Supabase (lo harás en la tarea 7).</li>
-      <li>Abre <a data-plantilla-href="«url_demos»/ejemplo-barberia/" href="https://mavie-demos.pages.dev/ejemplo-barberia/" target="_blank" rel="noopener noreferrer">la demo de ejemplo</a>. Tiene que verse la web de "El Faro".</li>
+      <li>Abre tu CRM: <code data-plantilla="«url_crm»"></code> (cópiala en el navegador). Verás el CRM con la banda amarilla <strong>"Modo prueba"</strong>. Es lo normal en este momento: aún no lo has conectado a Supabase (lo harás en la tarea 7).</li>
+      <li>Abre la demo de ejemplo: <code data-plantilla="«url_demos»/ejemplo-barberia/"></code>. Tiene que verse la web de "El Faro".</li>
     </ol>
     <div class="caja otra"><span class="caja-titulo">⚠️ Si las direcciones son distintas</span>Si Cloudflare les puso otro nombre (por ejemplo <code>valentina-crm-abc.pages.dev</code>), cámbialas en el paso 0.2 y pide esto a Antigravity:
       <div class="codigo"><pre><code data-plantilla="La dirección de las demos es «url_demos». Cámbiala en crm/js/ajustes.js (demos.urlBase) y en crm/_headers (connect-src), en una rama nueva llamada ajustar-direcciones. Después ejecuta npm run seguridad y npm test, haz commit y push, y dame el enlace del Pull Request."></code></pre><button class="boton copiar" type="button">Copiar</button></div>
@@ -697,7 +697,7 @@ SERPER_API_KEY=… (la consigues en el paso 7.5)"></code></pre></div>
 
   <article class="paso" data-paso="8.1" data-titulo="Entrar en tu CRM">
     <div class="paso-cabecera"><h3><span class="paso-id">8.1</span>Entrar en tu CRM</h3></div>
-    <p>Cuando Miguel haya aceptado el Pull Request del paso 7.3, abre <a data-plantilla-href="«url_crm»" href="https://valentina-crm.pages.dev" target="_blank" rel="noopener noreferrer"><span data-plantilla="«url_crm»">tu CRM</span></a>. Si estaba abierto, recarga con <kbd>Ctrl</kbd>+<kbd>F5</kbd>.</p>
+    <p>Cuando Miguel haya aceptado el Pull Request del paso 7.3, abre tu CRM en el navegador: <code data-plantilla="«url_crm»"></code>. Si estaba abierto, recarga con <kbd>Ctrl</kbd>+<kbd>F5</kbd>.</p>
     <ol>
       <li>Escribe tu correo y la contraseña del paso 5.5 (la de "CRM Valentina – mi usuario").</li>
       <li>Ábrelo también en el móvil y añádelo a la pantalla de inicio: en Chrome, menú ⋮ → <span class="clic">Añadir a pantalla de inicio</span>.</li>
@@ -888,10 +888,6 @@ Tus casillas se guardan solo en este navegador. <button class="boton" type="butt
     document.querySelectorAll('[data-plantilla]').forEach(function (el) {
       el.textContent = rellenar(el.getAttribute('data-plantilla'));
     });
-    document.querySelectorAll('[data-plantilla-href]').forEach(function (el) {
-      var url = rellenar(el.getAttribute('data-plantilla-href'));
-      if (/^https:\/\//.test(url)) el.setAttribute('href', url);
-    });
     document.querySelectorAll('.paso, .tarjeta').forEach(function (bloque) {
       var mensaje = bloque.querySelector('.mensaje[data-plantilla]');
       var wa = bloque.querySelector('.enviar-wa');
@@ -991,16 +987,19 @@ Tus casillas se guardan solo en este navegador. <button class="boton" type="butt
 
     var siguiente = lista.filter(function (p) { return !estado.hechos[p.getAttribute('data-paso')]; })[0];
     var enlace = document.getElementById('ir-siguiente');
-    if (siguiente) {
-      enlace.href = '#' + siguiente.id;
-      enlace.textContent = 'Siguiente: ' + siguiente.getAttribute('data-paso') + ' ↓';
-    } else {
-      enlace.href = '#t10';
-      enlace.textContent = '¡Ver el final! 🎉';
-    }
+    destinoSiguiente = siguiente || document.getElementById('t10');
+    enlace.textContent = siguiente ? 'Siguiente: ' + siguiente.getAttribute('data-paso') + ' ↓' : '¡Ver el final! 🎉';
     document.body.classList.toggle('terminado', total > 0 && hechos === total);
     pintarMensajeFinal();
   }
+
+  // "Ir al siguiente paso": se desplaza hasta él sin tocar el enlace.
+  var destinoSiguiente = null;
+  document.getElementById('ir-siguiente').addEventListener('click', function (e) {
+    if (!destinoSiguiente) return;
+    e.preventDefault();
+    destinoSiguiente.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
 
   // ---------------------------------------------------------------- mensaje final
   function pintarMensajeFinal() {
