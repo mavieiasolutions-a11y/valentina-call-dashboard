@@ -36,6 +36,7 @@ Antigravity ──/buscar-negocios──▶ CRM (Supabase) ◀── Valentina e
 - **El día a día:** [docs/04-flujo-de-trabajo.md](docs/04-flujo-de-trabajo.md)
 - **Seguridad:** [docs/05-seguridad.md](docs/05-seguridad.md)
 - **Puente con Harvey:** [docs/06-puente-harvey.md](docs/06-puente-harvey.md)
+- **Diseñar a tu gusto con Antigravity (prompting):** [docs/07-prompting-diseno.md](docs/07-prompting-diseno.md)
 
 ## Carpetas
 

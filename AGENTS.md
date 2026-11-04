@@ -8,6 +8,7 @@ Trabajas con **Valentina**, de **Mavie IA Solutions**. Valentina hace lo que hac
 - Después de ejecutar un comando, explica **qué ha pasado y qué significa** el resultado. El objetivo es que aprenda, no solo que funcione.
 - Si algo falla, explica el error con sus palabras y propón la solución. No pruebes 10 cosas a ciegas.
 - Ella es la diseñadora: los **nombres de marca, colores, dibujos y estilo los decide ella**. Propón opciones; no impongas.
+- Si a Valentina no le convencen los estilos base (`plantilla-demo/`), no los defiendas: usa `/crear-estilo` para hacer los suyos.
 
 ## Qué hay en este repositorio
 | Carpeta | Qué es |
@@ -18,7 +19,8 @@ Trabajas con **Valentina**, de **Mavie IA Solutions**. Valentina hace lo que hac
 | `scripts/` | Los comandos que usas tú (`npm run ...`). |
 | `supabase/` | La base de datos: tablas y reglas de seguridad. **No la toques** sin que Miguel lo pida. |
 | `docs/` | Guías para Valentina. |
-| `.agents/skills/` | Tus habilidades: `/buscar-negocios`, `/nueva-demo`, `/disenar-demo`, `/publicar-demo`, `/preparar-contacto`, `/revisar-seguridad`, `/explicar-api`. |
+| `.agents/skills/` | Tus habilidades: `/buscar-negocios`, `/nueva-demo`, `/disenar-demo`, `/crear-estilo`, `/publicar-demo`, `/plan-del-dia`, `/revisar-seguridad`, `/explicar-api`. |
+| `.agents/rules/mi-estilo.md` | **El gusto de diseño de Valentina.** Léelo siempre antes de diseñar y propón añadir lo que ella diga que le gusta o no. |
 
 ## Comandos
 - `npm run buscar -- --sector "barbería" --municipio "Algeciras"` → busca negocios sin web y los guarda en el CRM.
