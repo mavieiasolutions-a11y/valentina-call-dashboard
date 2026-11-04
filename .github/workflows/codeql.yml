@@ -1,0 +1,41 @@
+# CodeQL: análisis de seguridad del código de GitHub (gratis en repos públicos).
+name: CodeQL
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '23 6 * * 1'
+
+permissions:
+  contents: read
+
+jobs:
+  analizar:
+    name: Analizar ${{ matrix.lenguaje }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      security-events: write
+      contents: read
+      actions: read
+    strategy:
+      fail-fast: false
+      matrix:
+        lenguaje: [javascript-typescript, actions]
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: github/codeql-action/init@v4
+        with:
+          languages: ${{ matrix.lenguaje }}
+          queries: security-extended
+          config: |
+            paths-ignore:
+              - '**/vendor/**'
+              - node_modules
+      - uses: github/codeql-action/analyze@v4
+        with:
+          category: /language:${{ matrix.lenguaje }}

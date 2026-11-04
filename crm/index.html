@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="referrer" content="no-referrer">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#5b45d6">
+  <title>CRM Valentina · Mavie</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/crm.css">
+  <script src="vendor/supabase.js" defer></script>
+  <script src="js/app.js" type="module"></script>
+</head>
+<body>
+  <a class="saltar" href="#principal">Saltar al contenido</a>
+  <div id="banda-prueba" class="banda-prueba" hidden>
+    Modo prueba: datos de ejemplo guardados solo en este navegador. Para conectarlo de verdad, rellena <code>crm/config.js</code>.
+  </div>
+
+  <header class="cabecera" id="cabecera" hidden>
+    <a class="marca" href="#/hoy" aria-label="Inicio">
+      <img src="favicon.svg" alt="" width="28" height="28">
+      <span>CRM <strong>Valentina</strong></span>
+    </a>
+    <nav class="navegacion" aria-label="Secciones">
+      <a href="#/hoy" data-ruta="hoy"><span aria-hidden="true">☀︎</span> Hoy</a>
+      <a href="#/negocios" data-ruta="negocios"><span aria-hidden="true">▤</span> Negocios</a>
+      <a href="#/demos" data-ruta="demos"><span aria-hidden="true">◈</span> Demos</a>
+      <a href="#/plantillas" data-ruta="plantillas"><span aria-hidden="true">✎</span> Plantillas</a>
+      <a href="#/estadisticas" data-ruta="estadisticas"><span aria-hidden="true">▥</span> Cifras</a>
+      <a href="#/ayuda" data-ruta="ayuda"><span aria-hidden="true">?</span> Ayuda</a>
+    </nav>
+    <div class="usuario">
+      <span id="nombre-usuario"></span>
+      <button type="button" class="boton boton-suave" id="boton-salir">Salir</button>
+    </div>
+  </header>
+
+  <main id="principal" class="principal" tabindex="-1">
+    <p class="cargando">Cargando…</p>
+    <noscript>Este CRM necesita JavaScript.</noscript>
+  </main>
+
+  <div id="avisos" class="avisos" aria-live="polite"></div>
+</body>
+</html>

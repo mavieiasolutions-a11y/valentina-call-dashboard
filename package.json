@@ -1,0 +1,42 @@
+{
+  "name": "valentina-crm",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CRM de Valentina (Mavie IA Solutions): busca negocios sin web, crea demos animadas y gestiona el contacto.",
+  "type": "module",
+  "engines": {
+    "node": ">=20.12"
+  },
+  "scripts": {
+    "crm": "node scripts/construir-crm.mjs && node scripts/servidor.mjs crm 5500",
+    "build:crm": "node scripts/construir-crm.mjs",
+    "ver-demos": "node scripts/servidor.mjs demos 5600",
+    "buscar": "node scripts/buscar-negocios.mjs",
+    "demo:nueva": "node scripts/nueva-demo.mjs",
+    "demo:estado": "node scripts/marcar-demo.mjs",
+    "imagenes": "node scripts/optimizar-imagenes.mjs",
+    "probar-apis": "node scripts/probar-apis.mjs",
+    "seguridad": "node scripts/revisar-seguridad.mjs",
+    "test": "node --test \"tests/unit/*.test.js\"",
+    "test:e2e": "node scripts/construir-crm.mjs && node --test --test-concurrency=1 \"tests/e2e/*.test.js\"",
+    "comprobar": "npm run seguridad && npm test",
+    "test:sql": "bash supabase/tests/ejecutar.sh",
+    "hoy": "node scripts/hoy.mjs"
+  },
+  "devDependencies": {
+    "@fontsource/bricolage-grotesque": "5.3.0",
+    "@fontsource/cormorant-garamond": "5.3.0",
+    "@fontsource/dm-sans": "5.3.0",
+    "@fontsource/fraunces": "5.3.0",
+    "@fontsource/inter": "5.3.0",
+    "@fontsource/manrope": "5.3.0",
+    "@fontsource/outfit": "5.3.0",
+    "@fontsource/playfair-display": "5.3.0",
+    "@fontsource/space-grotesk": "5.3.0",
+    "@fontsource/syne": "5.3.0",
+    "@supabase/supabase-js": "2.119.0",
+    "gsap": "3.15.1",
+    "sharp": "0.35.5",
+    "svgo": "4.1.0"
+  }
+}

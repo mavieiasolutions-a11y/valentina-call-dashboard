@@ -1,0 +1,8 @@
+# Configuración de gitleaks (búsqueda de claves). Usa las reglas por defecto
+# y solo ignora los textos de ejemplo de .env.example.
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Ejemplos sin valor real"
+paths = ['''\.env\.example$''']

@@ -1,0 +1,17 @@
+# Dependabot avisa (con un Pull Request) cuando una librería tiene un fallo
+# de seguridad o hay versión nueva. Se agrupan para no llenar de avisos.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    groups:
+      dependencias:
+        patterns: ['*']
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly

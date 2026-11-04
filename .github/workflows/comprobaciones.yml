@@ -1,0 +1,90 @@
+# Se ejecuta en cada Pull Request y en cada cambio en main.
+# Si algo sale en rojo, el Pull Request no se debe aceptar.
+name: Comprobaciones
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: comprobaciones-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  seguridad-y-pruebas:
+    name: Seguridad, pruebas y base de datos
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      PGURL: postgres://postgres:postgres@localhost:5432/postgres
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Revisión de seguridad (PHP, claves, demos, CRM)
+        run: npm run seguridad
+      - name: Pruebas de reglas y scripts
+        run: npm test
+      - name: Pruebas de la base de datos (permisos RLS)
+        run: npm run test:sql
+      - name: Dependencias con fallos de seguridad conocidos
+        run: npm audit --audit-level=high
+
+  navegador:
+    name: CRM en un navegador real
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Instalar Playwright (solo para las pruebas)
+        run: |
+          npm install --no-save playwright@1.63.0
+          npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+
+  claves:
+    name: Buscar claves en el historial (gitleaks)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Descargar gitleaks y comprobar su firma
+        run: |
+          V=8.30.0
+          curl -sSfLO "https://github.com/gitleaks/gitleaks/releases/download/v${V}/gitleaks_${V}_linux_x64.tar.gz"
+          curl -sSfLO "https://github.com/gitleaks/gitleaks/releases/download/v${V}/gitleaks_${V}_checksums.txt"
+          grep "gitleaks_${V}_linux_x64.tar.gz" "gitleaks_${V}_checksums.txt" | sha256sum -c -
+          tar -xzf "gitleaks_${V}_linux_x64.tar.gz" gitleaks
+      - name: Buscar claves
+        run: ./gitleaks git --redact --verbose --exit-code 1 .
