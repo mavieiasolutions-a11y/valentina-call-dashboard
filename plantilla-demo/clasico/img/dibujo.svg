@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 440" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+  <title>Ramita dibujada a mano</title>
+  <path d="M196 424C186 364 214 312 202 252C190 192 216 142 206 84"/>
+  <path d="M202 262C236 250 262 228 286 198"/>
+  <g transform="translate(199 374) rotate(-58)"><path d="M0 0C-13-15-13-45 0-64C13-45 13-15 0 0Z"/><path d="M0-8V-54"/></g>
+  <g transform="translate(203 338) rotate(54)"><path d="M0 0C-13-15-13-45 0-64C13-45 13-15 0 0Z"/><path d="M0-8V-54"/></g>
+  <g transform="translate(203 292) rotate(-50)"><path d="M0 0C-12-14-12-41 0-58C12-41 12-14 0 0Z"/><path d="M0-8V-48"/></g>
+  <g transform="translate(197 212) rotate(-44)"><path d="M0 0C-12-14-12-41 0-58C12-41 12-14 0 0Z"/><path d="M0-8V-48"/></g>
+  <g transform="translate(205 172) rotate(42)"><path d="M0 0C-11-13-11-37 0-52C11-37 11-13 0 0Z"/><path d="M0-7V-43"/></g>
+  <g transform="translate(207 132) rotate(-38)"><path d="M0 0C-10-12-10-33 0-46C10-33 10-12 0 0Z"/><path d="M0-6V-38"/></g>
+  <g transform="translate(238 244) rotate(-20)"><path d="M0 0C-9-10-9-28 0-40C9-28 9-10 0 0Z"/></g>
+  <g transform="translate(262 222) rotate(64)"><path d="M0 0C-9-10-9-28 0-40C9-28 9-10 0 0Z"/></g>
+  <circle cx="292" cy="188" r="7"/>
+  <circle cx="306" cy="204" r="5.5"/>
+  <circle cx="279" cy="178" r="5"/>
+  <g transform="translate(206 66)">
+    <path d="M0-9C-11-18-11-36 0-44C11-36 11-18 0-9Z"/>
+    <path d="M0-9C-11-18-11-36 0-44C11-36 11-18 0-9Z" transform="rotate(60)"/>
+    <path d="M0-9C-11-18-11-36 0-44C11-36 11-18 0-9Z" transform="rotate(120)"/>
+    <path d="M0-9C-11-18-11-36 0-44C11-36 11-18 0-9Z" transform="rotate(180)"/>
+    <path d="M0-9C-11-18-11-36 0-44C11-36 11-18 0-9Z" transform="rotate(240)"/>
+    <path d="M0-9C-11-18-11-36 0-44C11-36 11-18 0-9Z" transform="rotate(300)"/>
+    <circle r="7"/>
+  </g>
+  <path d="M136 424C172 412 226 432 266 418"/>
+</svg>

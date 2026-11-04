@@ -1,0 +1,17 @@
+{
+  "id": "clasico",
+  "nombre": "Clásico",
+  "descripcion": "Cálido y elegante: títulos con serifa, colores crema y terracota, un arco con el dibujo a mano y animaciones suaves que aparecen al bajar.",
+  "ideal_para": ["panadería", "pastelería", "floristería", "peluquería", "centro de estética", "cafetería", "tienda de regalos", "mercería"],
+  "fuentes": [
+    {
+      "paquete": "@fontsource/fraunces",
+      "archivos": ["fraunces-latin-400-normal.woff2", "fraunces-latin-400-italic.woff2", "fraunces-latin-600-normal.woff2"]
+    },
+    {
+      "paquete": "@fontsource/inter",
+      "archivos": ["inter-latin-400-normal.woff2", "inter-latin-500-normal.woff2", "inter-latin-600-normal.woff2"]
+    }
+  ],
+  "gsap": ["gsap.min.js", "ScrollTrigger.min.js", "SplitText.min.js", "DrawSVGPlugin.min.js"]
+}

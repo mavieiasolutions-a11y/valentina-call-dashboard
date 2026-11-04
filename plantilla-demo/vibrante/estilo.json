@@ -1,0 +1,17 @@
+{
+  "id": "vibrante",
+  "nombre": "Vibrante",
+  "descripcion": "Colorido y con energía: formas que flotan y se mueven al bajar, botones tipo pegatina, tarjetas de colores y el dibujo a mano en una pegatina amarilla.",
+  "ideal_para": ["gimnasio", "academia", "autoescuela", "escuela de baile", "taller", "ludoteca", "tienda de bicicletas", "centro deportivo"],
+  "fuentes": [
+    {
+      "paquete": "@fontsource/outfit",
+      "archivos": ["outfit-latin-600-normal.woff2", "outfit-latin-800-normal.woff2"]
+    },
+    {
+      "paquete": "@fontsource/dm-sans",
+      "archivos": ["dm-sans-latin-400-normal.woff2", "dm-sans-latin-500-normal.woff2", "dm-sans-latin-700-normal.woff2"]
+    }
+  ],
+  "gsap": ["gsap.min.js", "ScrollTrigger.min.js", "SplitText.min.js", "DrawSVGPlugin.min.js"]
+}

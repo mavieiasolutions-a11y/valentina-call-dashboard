@@ -1,0 +1,8 @@
+# Quién revisa cada parte. GitHub pide su revisión automáticamente.
+# Las reglas de seguridad (base de datos, comprobaciones y reglas de contacto)
+# siempre las revisa Miguel.
+*                                   @mavieiasolutions-a11y
+/supabase/                          @mavieiasolutions-a11y
+/.github/                           @mavieiasolutions-a11y
+/crm/js/reglas.js                   @mavieiasolutions-a11y
+/scripts/revisar-seguridad.mjs      @mavieiasolutions-a11y
