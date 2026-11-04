@@ -76,6 +76,8 @@ test('no se deja engañar con trucos de HTML', () => {
     'demos/t4/index.html': `${DEMO_BUENA}<script>alert(4)`,
     // Script de fuera sin protocolo y con mayúsculas
     'demos/t5/index.html': `${DEMO_BUENA}<SCRIPT SRC="//cdn.ejemplo.com/x.js"></SCRIPT>`,
+    // Un "<!--" dentro de un script no abre un comentario: el segundo script se ejecuta.
+    'demos/t6/index.html': `${DEMO_BUENA}<script src="js/a.js">/* <!-- */</script><script>alert(6)</script><!-- -->`,
   };
   const archivos = { ...CABECERAS };
   for (const [ruta, html] of Object.entries(trucos)) {
@@ -84,9 +86,16 @@ test('no se deja engañar con trucos de HTML', () => {
   }
   const r = revisar(archivos);
   assert.equal(r.codigo, 1);
-  for (const n of ['t1', 't2', 't4']) assert.match(r.salida, new RegExp(`demos/${n}/index.html: tiene un <script> escrito`), n);
+  for (const n of ['t1', 't2', 't4', 't6']) assert.match(r.salida, new RegExp(`demos/${n}/index.html: tiene un <script> escrito`), n);
   assert.match(r.salida, /demos\/t3\/index.html: <a> tiene eventos/);
   assert.match(r.salida, /demos\/t5\/index.html: carga un script de fuera/);
+});
+
+test('textos enormes y raros no cuelgan el revisor', () => {
+  const raro = `${DEMO_BUENA}<A !=${'!/ !='.repeat(20000)}>${'<a title="'.repeat(5000)}`;
+  const inicio = Date.now();
+  revisar({ ...CABECERAS, 'demos/raro/index.html': raro, 'demos/raro/demo.json': '{"slug":"raro"}' });
+  assert.ok(Date.now() - inicio < 5000, 'debe terminar en segundos');
 });
 
 test('el CRM no puede usar innerHTML', () => {

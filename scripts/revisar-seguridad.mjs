@@ -96,32 +96,102 @@ for (const f of archivos) {
 // -----------------------------------------------------------------------------
 // 3. Demos
 // -----------------------------------------------------------------------------
-// Lectura de HTML parecida a la del navegador, sin librerías:
-//  - Los comentarios terminan donde el navegador los termina: "-->", "--!>",
-//    y los cortos "<!-->" y "<!--->". Si no se cierran, llegan hasta el final.
-//  - Las etiquetas se leen con sus atributos entre comillas (un ">" dentro de
-//    title="a>b" no corta la etiqueta), así no se escapa un onclick escondido.
+// Lectura de HTML parecida a la del navegador, carácter a carácter y sin
+// expresiones regulares complicadas (que con textos raros pueden colgarse):
+//  - Comentarios: terminan en "-->" o "--!>"; los cortos "<!-->" y "<!--->"
+//    ya están cerrados; si no se cierran, llegan hasta el final.
+//  - Etiquetas: se leen sus atributos respetando las comillas, así un ">"
+//    dentro de title="a>b" no esconde un onclick que vaya detrás.
+//  - Dentro de <script> y <style> no hay etiquetas ni comentarios: se salta
+//    hasta su cierre, igual que hace el navegador.
 
-/** Zonas [inicio, fin) del HTML que son comentarios. */
-function rangosDeComentario(html) {
-  const rangos = [];
-  let i = 0;
-  while (i < html.length) {
-    const inicio = html.indexOf('<!--', i);
-    if (inicio === -1) break;
-    let fin;
-    if (html.startsWith('>', inicio + 4)) fin = inicio + 5;
-    else if (html.startsWith('->', inicio + 4)) fin = inicio + 6;
-    else {
-      const a = html.indexOf('-->', inicio + 4);
-      const b = html.indexOf('--!>', inicio + 4);
-      fin = Math.min(a === -1 ? Infinity : a + 3, b === -1 ? Infinity : b + 4);
-      if (fin === Infinity) fin = html.length;
-    }
-    rangos.push([inicio, fin]);
-    i = fin;
+const ESPACIO = new Set([' ', '\t', '\n', '\r', '\f']);
+const esLetra = (c) => (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
+
+function finDeComentario(html, inicio) {
+  if (html.startsWith('>', inicio + 4)) return inicio + 5;
+  if (html.startsWith('->', inicio + 4)) return inicio + 6;
+  const a = html.indexOf('-->', inicio + 4);
+  const b = html.indexOf('--!>', inicio + 4);
+  const fin = Math.min(a === -1 ? Infinity : a + 3, b === -1 ? Infinity : b + 4);
+  return fin === Infinity ? html.length : fin;
+}
+
+function cierreDe(html, nombre, desde) {
+  const bajo = html.toLowerCase();
+  let i = desde;
+  for (;;) {
+    const pos = bajo.indexOf(`</${nombre}`, i);
+    if (pos === -1) return html.length;
+    const siguiente = html[pos + nombre.length + 2];
+    if (siguiente === undefined || siguiente === '>' || siguiente === '/' || ESPACIO.has(siguiente)) return pos;
+    i = pos + 1;
   }
-  return rangos;
+}
+
+/** Etiquetas de apertura (con atributos) y zonas de comentario del HTML. */
+function analizarHtml(html) {
+  const etiquetas = [];
+  const rangos = [];
+  const n = html.length;
+  let i = 0;
+  while (i < n) {
+    const lt = html.indexOf('<', i);
+    if (lt === -1) break;
+    if (html.startsWith('<!--', lt)) {
+      const fin = finDeComentario(html, lt);
+      rangos.push([lt, fin]);
+      i = fin;
+      continue;
+    }
+    const c = html[lt + 1];
+    if (c === '!' || c === '?' || c === '/') {
+      // <!DOCTYPE>, <?...>, etiquetas de cierre: hasta el siguiente ">"
+      const fin = html.indexOf('>', lt + 1);
+      i = fin === -1 ? n : fin + 1;
+      continue;
+    }
+    if (c === undefined || !esLetra(c)) {
+      i = lt + 1;
+      continue;
+    }
+    let k = lt + 1;
+    while (k < n && html[k] !== '/' && html[k] !== '>' && !ESPACIO.has(html[k])) k++;
+    const nombre = html.slice(lt + 1, k).toLowerCase();
+    const atributos = {};
+    while (k < n) {
+      while (k < n && (ESPACIO.has(html[k]) || html[k] === '/')) k++;
+      if (k >= n || html[k] === '>') break;
+      const a = k;
+      k++; // el primer carácter siempre es parte del nombre (aunque sea "=")
+      while (k < n && html[k] !== '/' && html[k] !== '>' && html[k] !== '=' && !ESPACIO.has(html[k])) k++;
+      const nombreAtributo = html.slice(a, k).toLowerCase();
+      let j = k;
+      while (j < n && ESPACIO.has(html[j])) j++;
+      let valor = '';
+      if (html[j] === '=') {
+        j++;
+        while (j < n && ESPACIO.has(html[j])) j++;
+        const comilla = html[j];
+        if (comilla === '"' || comilla === "'") {
+          const cierre = html.indexOf(comilla, j + 1);
+          const finValor = cierre === -1 ? n : cierre;
+          valor = html.slice(j + 1, finValor);
+          k = finValor + 1;
+        } else {
+          const b = j;
+          while (j < n && html[j] !== '>' && !ESPACIO.has(html[j])) j++;
+          valor = html.slice(b, j);
+          k = j;
+        }
+      }
+      if (!(nombreAtributo in atributos)) atributos[nombreAtributo] = valor; // como el navegador: vale el primero
+    }
+    const fin = Math.min(k + 1, n);
+    etiquetas.push({ nombre, atributos, fin });
+    i = nombre === 'script' || nombre === 'style' ? cierreDe(html, nombre, fin) : fin;
+  }
+  return { etiquetas, rangos };
 }
 
 /** El HTML sin comentarios (para buscar textos visibles). */
@@ -135,32 +205,10 @@ function textoSinComentarios(html, rangos) {
   return salida + html.slice(desde);
 }
 
-const ETIQUETA = /<([a-zA-Z][^\s/>]*)((?:\s+[^\s"'>/=]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^\s"'>]+))?|\s*\/)*)\s*>/g;
-const ATRIBUTO = /([^\s"'>/=]+)(?:\s*=\s*("[^"]*"|'[^']*'|[^\s"'>]+))?/g;
-const CIERRE_SCRIPT = /<\/script[\s/>]/gi;
-
-/** Etiquetas de apertura que NO están dentro de un comentario, con sus atributos. */
-function leerEtiquetas(html) {
-  const rangos = rangosDeComentario(html);
-  const enComentario = (pos) => rangos.some(([a, b]) => pos >= a && pos < b);
-  const etiquetas = [];
-  for (const m of html.matchAll(ETIQUETA)) {
-    if (enComentario(m.index)) continue;
-    const atributos = {};
-    for (const a of m[2].matchAll(ATRIBUTO)) {
-      let valor = a[2] ?? '';
-      if (/^["']/.test(valor)) valor = valor.slice(1, -1);
-      atributos[a[1].toLowerCase()] = valor;
-    }
-    etiquetas.push({ nombre: m[1].toLowerCase(), atributos, fin: m.index + m[0].length });
-  }
-  return { etiquetas, rangos };
-}
-
 const esExterna = (url = '') => /^(?:[a-z][a-z0-9+.-]*:)?\/\//i.test(url.trim());
 
 function revisarHtml(f, html, { esDemo }) {
-  const { etiquetas, rangos } = leerEtiquetas(html);
+  const { etiquetas, rangos } = analizarHtml(html);
   const texto = textoSinComentarios(html, rangos);
   const de = (nombre) => etiquetas.filter((e) => e.nombre === nombre);
 
@@ -169,9 +217,7 @@ function revisarHtml(f, html, { esDemo }) {
       if (esExterna(atributos.src)) error(f, `carga un script de fuera (${atributos.src}). Todo tiene que ser local.`);
       continue;
     }
-    CIERRE_SCRIPT.lastIndex = fin;
-    const cierre = CIERRE_SCRIPT.exec(html);
-    const cuerpo = html.slice(fin, cierre ? cierre.index : html.length);
+    const cuerpo = html.slice(fin, cierreDe(html, 'script', fin));
     if (cuerpo.trim() && !/^application\/(ld\+)?json$/i.test(atributos.type ?? '')) {
       error(f, 'tiene un <script> escrito dentro del HTML. Ponlo en un archivo .js aparte.');
     }
