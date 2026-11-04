@@ -64,6 +64,31 @@ test('detecta demos inseguras', () => {
   }
 });
 
+test('no se deja engañar con trucos de HTML', () => {
+  const trucos = {
+    // El navegador cierra el comentario en "<!-->": el script de después SÍ se ejecuta.
+    'demos/t1/index.html': `${DEMO_BUENA}<!--> <script>alert(1)</script> -->`,
+    // Cierre de script con espacio
+    'demos/t2/index.html': `${DEMO_BUENA}<script>alert(2)</script >`,
+    // Evento sin comillas y escondido detrás de un ">" dentro de otro atributo
+    'demos/t3/index.html': `${DEMO_BUENA}<a title="a>b" onclick=alert(3) href="#">x</a>`,
+    // Script en línea sin cerrar
+    'demos/t4/index.html': `${DEMO_BUENA}<script>alert(4)`,
+    // Script de fuera sin protocolo y con mayúsculas
+    'demos/t5/index.html': `${DEMO_BUENA}<SCRIPT SRC="//cdn.ejemplo.com/x.js"></SCRIPT>`,
+  };
+  const archivos = { ...CABECERAS };
+  for (const [ruta, html] of Object.entries(trucos)) {
+    archivos[ruta] = html;
+    archivos[ruta.replace('index.html', 'demo.json')] = JSON.stringify({ slug: ruta.split('/')[1] });
+  }
+  const r = revisar(archivos);
+  assert.equal(r.codigo, 1);
+  for (const n of ['t1', 't2', 't4']) assert.match(r.salida, new RegExp(`demos/${n}/index.html: tiene un <script> escrito`), n);
+  assert.match(r.salida, /demos\/t3\/index.html: <a> tiene eventos/);
+  assert.match(r.salida, /demos\/t5\/index.html: carga un script de fuera/);
+});
+
 test('el CRM no puede usar innerHTML', () => {
   const r = revisar({ ...CABECERAS, 'crm/js/x.js': 'nodo.innerHTML = datos.nombre;' });
   assert.equal(r.codigo, 1);

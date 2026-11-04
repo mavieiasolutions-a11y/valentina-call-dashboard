@@ -8,6 +8,7 @@ import {
   esSanitario,
   puntuarNegocio,
   enlaceMaps,
+  esInstagram,
 } from '../../crm/js/reglas.js';
 import { AJUSTES } from '../../crm/js/ajustes.js';
 
@@ -92,7 +93,7 @@ export function preparar(n, ajustes = AJUSTES) {
       ...n,
       telefono_tipo: tipoTelefono(n.telefono),
       web_tipo,
-      instagram: n.instagram || (/instagram\.com/i.test(n.web) ? n.web : ''),
+      instagram: n.instagram || (esInstagram(n.web) ? n.web : ''),
       sanitario: esSanitario(`${n.nombre} ${n.sector}`),
       puntuacion: puntos,
       notas: `Puntuación ${puntos}: ${razones.join('; ')}`,

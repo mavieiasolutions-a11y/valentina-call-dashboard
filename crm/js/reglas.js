@@ -233,6 +233,19 @@ export function clasificarWeb(url) {
   return 'propia';
 }
 
+/**
+ * ¿La URL es de este dominio (o de un subdominio suyo)? Se mira el nombre del
+ * servidor ya interpretado, nunca el texto: "https://malo.com/?instagram.com"
+ * NO es de instagram.com.
+ */
+export function esDelDominio(url, dominioBase) {
+  if (!url) return false;
+  const host = dominio(String(url).trim());
+  return Boolean(host) && coincideDominio(host, [dominioBase]);
+}
+
+export const esInstagram = (url) => esDelDominio(url, 'instagram.com');
+
 /** Un negocio sin web propia es candidato aunque tenga Instagram o salga en directorios. */
 export function necesitaWeb(url) {
   return clasificarWeb(url) !== 'propia';

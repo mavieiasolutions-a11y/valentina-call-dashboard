@@ -84,7 +84,8 @@ test('WhatsApp: plantilla válida, enlace wa.me y registro del envío', { skip: 
   const texto = pagina.locator('#texto-whatsapp');
   await texto.waitFor();
   const mensaje = await texto.inputValue();
-  assert.match(mensaje, /https:\/\/mavie-demos\.pages\.dev\/ejemplo-barberia\//);
+  const enlacesMensaje = mensaje.match(/https:\/\/\S+/g) ?? [];
+  assert.deepEqual(enlacesMensaje, ['https://mavie-demos.pages.dev/ejemplo-barberia/'], 'un solo enlace: el de su demo');
   assert.match(mensaje, /BAJA/);
   await pagina.getByText('El mensaje cumple las reglas').waitFor();
   await pagina.getByText('La demo carga desde tu conexión').waitFor();

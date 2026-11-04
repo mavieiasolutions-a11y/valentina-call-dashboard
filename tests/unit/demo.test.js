@@ -355,9 +355,18 @@ describe('crearDemo', () => {
     assert.deepEqual(revisarHtml(html), []);
     // Los botones de llamar y WhatsApp quedan marcados como vacíos (los oculta el CSS).
     assert.match(html, /href="" data-si=""/);
-    assert.ok(!/href="tel:/.test(html));
-    assert.ok(!/wa\.me/.test(html));
-    assert.ok(!/google\.com\/maps/.test(html));
+    // Ningún enlace a teléfono, WhatsApp ni Google Maps (se mira el servidor de cada enlace, no el texto).
+    const enlaces = [...html.matchAll(/href="([^"]*)"/g)].map((m) => m[1]);
+    const servidores = enlaces.map((h) => {
+      try {
+        return new URL(h).hostname;
+      } catch {
+        return '';
+      }
+    });
+    assert.ok(!enlaces.some((h) => h.startsWith('tel:')));
+    assert.ok(!servidores.includes('wa.me'));
+    assert.ok(!servidores.some((h) => h === 'google.com' || h.endsWith('.google.com')));
     // Y aparece el texto alternativo neutro.
     assert.match(html, /data-no="">Aquí irán la dirección y el botón para llegar en Google Maps\./);
     assert.match(await leer(carpeta, 'css/base.css'), /\[data-si=''\]/);

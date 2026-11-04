@@ -14,6 +14,7 @@ import {
   clasificarWeb,
   puntuarNegocio,
   esSanitario,
+  esInstagram,
 } from './reglas.js';
 import { comprobarCarga } from './componentes.js';
 
@@ -383,7 +384,7 @@ export function dialogoNegocio(ctx, negocio, alGuardar) {
           const datos = {
             nombre, telefono, telefono_tipo: tipoTelefono(telefono), sector: leer('sector'), municipio: leer('municipio'),
             direccion: leer('direccion'), web, web_tipo: clasificarWeb(web), notas: notas.value.trim(),
-            instagram: /instagram\.com/i.test(web) ? web : v('instagram'),
+            instagram: esInstagram(web) ? web : v('instagram'),
             sanitario: esSanitario(`${nombre} ${leer('sector')}`),
           };
           datos.puntuacion = puntuarNegocio({ ...negocio, ...datos, direccion: `${datos.direccion} ${datos.municipio}` }, ctx.ajustes).puntos;

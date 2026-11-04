@@ -82,7 +82,7 @@ function nombreLimpio(archivo) {
   return slugify(base) || 'imagen';
 }
 
-async function rasterAWebp(origen, destino, ancho) {
+async function rasterAWebp(origen /* Buffer con la imagen */, destino, ancho) {
   // Si pasa de 300 KB, se baja la calidad poco a poco.
   for (const calidad of [CALIDAD_WEBP, 70, 62, 54, 46]) {
     const datos = await sharp(origen, { limitInputPixels: 268402689 })
@@ -133,15 +133,19 @@ export async function optimizarCarpeta(carpeta, { log = console.log } = {}) {
   for (const nombre of entradas) {
     const origen = path.join(originales, nombre);
     const extension = path.extname(nombre).toLowerCase();
-    const antes = (await fs.stat(origen)).size;
+    // Se lee el archivo una sola vez y se trabaja con esa copia en memoria
+    // (comprobar y después volver a leer deja un hueco en el que puede cambiar).
     const base = nombreLimpio(nombre);
+    let antes = 0;
     try {
+      const contenido = await fs.readFile(origen);
+      antes = contenido.length;
       if (RASTER.has(extension)) {
-        const grande = await rasterAWebp(origen, path.join(destino, `${base}.webp`), ANCHO_MAXIMO);
-        const pequena = await rasterAWebp(origen, path.join(destino, `${base}-${ANCHO_PEQUENO}.webp`), ANCHO_PEQUENO);
+        const grande = await rasterAWebp(contenido, path.join(destino, `${base}.webp`), ANCHO_MAXIMO);
+        const pequena = await rasterAWebp(contenido, path.join(destino, `${base}-${ANCHO_PEQUENO}.webp`), ANCHO_PEQUENO);
         resultados.push({ nombre, tipo: 'foto', antes, salidas: [`img/${base}.webp`, `img/${base}-${ANCHO_PEQUENO}.webp`], despues: grande.bytes + pequena.bytes, grande, pequena });
       } else if (VECTOR.has(extension)) {
-        const texto = await fs.readFile(origen, 'utf8');
+        const texto = contenido.toString('utf8');
         const { data } = optimize(texto, { ...CONFIG_SVGO, path: origen });
         await fs.writeFile(path.join(destino, `${base}.svg`), data);
         resultados.push({ nombre, tipo: 'dibujo', antes, salidas: [`img/${base}.svg`], despues: Buffer.byteLength(data), trazos: tieneTrazos(data) });
