@@ -7,7 +7,6 @@ import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
 import { createRequire } from 'node:module';
-import { existsSync } from 'node:fs';
 
 const require = createRequire(import.meta.url);
 let chromium;
@@ -27,11 +26,11 @@ let navegador;
 
 before(async () => {
   if (!chromium) return;
-  if (existsSync('crm/config.js')) {
-    const { CONFIG } = await import('../../crm/config.js');
-    if (CONFIG.url) throw new Error('Las pruebas e2e se hacen en modo prueba: deja crm/config.js vacío en esta rama o usa una copia.');
-  }
-  servidor = spawn(process.execPath, ['scripts/servidor.mjs', 'crm', String(PUERTO)], { stdio: 'ignore' });
+  // CRM_MODO_PRUEBA hace que el servidor ignore crm/config.js: las pruebas nunca tocan la base de datos real.
+  servidor = spawn(process.execPath, ['scripts/servidor.mjs', 'crm', String(PUERTO)], {
+    stdio: 'ignore',
+    env: { ...process.env, CRM_MODO_PRUEBA: '1' },
+  });
   for (let i = 0; i < 50; i++) {
     try {
       if ((await fetch(BASE)).ok) break;

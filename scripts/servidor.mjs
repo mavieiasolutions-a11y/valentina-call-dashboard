@@ -49,6 +49,13 @@ createServer((req, res) => {
     }
     archivo = join(archivo, 'index.html');
   }
+  // Pruebas automáticas: el CRM arranca siempre en modo prueba, aunque
+  // crm/config.js tenga ya los datos de Supabase.
+  if (process.env.CRM_MODO_PRUEBA === '1' && ruta === '/config.js') {
+    res.writeHead(200, { ...cabeceras, 'Content-Type': 'text/javascript; charset=utf-8', 'Cache-Control': 'no-store' });
+    res.end("export const CONFIG = { url: '', clavePublica: '' };\n");
+    return;
+  }
   if (!existsSync(archivo) || /(^|[\\/])(_headers|\.env.*)$/.test(archivo)) {
     res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' }).end('No encontrado');
     return;

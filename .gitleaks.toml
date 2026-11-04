@@ -1,8 +1,11 @@
 # Configuración de gitleaks (búsqueda de claves). Usa las reglas por defecto
-# y solo ignora los textos de ejemplo de .env.example.
+# Ignora los textos de ejemplo de .env.example y la clave PÚBLICA de Supabase
+# (sb_publishable_...), que va en crm/config.js a propósito: los datos los
+# protegen las reglas RLS, no esa clave. La secreta (sb_secret_) sí se detecta.
 [extend]
 useDefault = true
 
 [allowlist]
 description = "Ejemplos sin valor real"
 paths = ['''\.env\.example$''']
+regexes = ['''sb_publishable_[A-Za-z0-9_-]+''']

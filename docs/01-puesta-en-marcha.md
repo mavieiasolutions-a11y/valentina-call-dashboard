@@ -1,6 +1,13 @@
 # Puesta en marcha (una sola vez)
 
-Tiempo: unos 60-90 minutos entre los dos. Los pasos 1-6 los hace **Miguel** (son de administración). El paso 7 lo hace **Valentina** en su ordenador.
+Resumen técnico. **La guía paso a paso para Valentina, con casillas y progreso, es [`guia-valentina.html`](guia-valentina.html)**: descárgala y ábrela con Chrome o Edge.
+
+Reparto acordado:
+
+- **Valentina** crea las cuentas de Supabase y Cloudflare (son suyas) e invita a Miguel como propietario.
+- **Miguel** acepta las invitaciones, conecta GitHub con Cloudflare (hace falta ser dueño del repositorio), acepta los Pull Requests y configura GitHub (paso 5).
+
+Tiempo: unas 2-3 horas en total.
 
 > Regla de oro: las contraseñas y claves van a **Bitwarden** y a `.env.local`. Nunca al chat, a un correo o a GitHub.
 
