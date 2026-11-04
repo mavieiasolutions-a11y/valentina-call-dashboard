@@ -1,0 +1,28 @@
+# Dependencias y archivos generados
+node_modules/
+crm/vendor/
+dist/
+.cache/
+test-results/
+playwright-report/
+
+# Claves y secretos: NUNCA se suben
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets/
+supabase/.temp/
+supabase/.branches/
+
+# Sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log
+
+# Originales pesados de la tableta (se suben solo las versiones optimizadas)
+**/originales/
+*.kra
+*.psd
