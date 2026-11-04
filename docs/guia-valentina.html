@@ -1,0 +1,1093 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Puesta en marcha · Guía de Valentina</title>
+<style>
+  :root {
+    --fondo: #f6f5f2; --papel: #ffffff; --papel-2: #f0eee9; --borde: #e2dfd8;
+    --texto: #1b1a19; --texto-2: #57544e; --texto-3: #7b776f;
+    --acento: #5b45d6; --acento-suave: #ece9fb; --acento-texto: #fff;
+    --ok: #157a3c; --ok-suave: #e3f4e8; --ojo: #8a5a00; --ojo-suave: #fdf1d6;
+    --miguel: #0f6e8c; --miguel-suave: #e1f2f7; --peligro: #b42318; --peligro-suave: #fde8e6;
+    --radio: 12px; --mono: ui-monospace, "Cascadia Code", Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --fondo: #141413; --papel: #1d1c1b; --papel-2: #262523; --borde: #34322f;
+      --texto: #f0efec; --texto-2: #c3c2b7; --texto-3: #9a978f;
+      --acento: #9a8cf2; --acento-suave: #2a2546; --acento-texto: #141413;
+      --ok: #5bc884; --ok-suave: #16301f; --ojo: #e8b54a; --ojo-suave: #3a2c0d;
+      --miguel: #6cc4e0; --miguel-suave: #12303a; --peligro: #f07b70; --peligro-suave: #3d1714;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; scroll-padding-top: 90px; }
+  body { margin: 0; background: var(--fondo); color: var(--texto); font: 17px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
+  a { color: var(--acento); }
+  h1, h2, h3 { line-height: 1.2; }
+  h1 { font-size: 1.9rem; margin: 0 0 .4rem; }
+  h2 { font-size: 1.35rem; margin: 0; }
+  h3 { font-size: 1.08rem; margin: 0; }
+  p { margin: 0 0 .8rem; }
+  ol, ul { padding-left: 1.4rem; margin: 0 0 .8rem; }
+  li { margin-bottom: .35rem; }
+  code, kbd { font-family: var(--mono); font-size: .9em; }
+  :not(pre) > code { background: var(--papel-2); padding: .08em .35em; border-radius: 5px; overflow-wrap: anywhere; }
+  kbd { background: var(--papel); border: 1px solid var(--borde); border-bottom-width: 2px; border-radius: 5px; padding: .05em .4em; white-space: nowrap; }
+  .clic { font-weight: 650; background: var(--acento-suave); color: var(--acento); padding: .05em .4em; border-radius: 5px; white-space: nowrap; }
+  .envoltura { max-width: 860px; margin: 0 auto; padding: 0 16px 4rem; }
+
+  /* Barra de progreso fija */
+  .progreso { position: sticky; top: 0; z-index: 10; background: var(--papel); border-bottom: 1px solid var(--borde); box-shadow: 0 2px 10px rgb(0 0 0 / .05); }
+  .progreso-dentro { max-width: 860px; margin: 0 auto; padding: .6rem 16px; display: flex; align-items: center; gap: .9rem; }
+  .progreso-texto { font-weight: 650; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .barra { flex: 1; height: 12px; background: var(--papel-2); border-radius: 99px; overflow: hidden; }
+  .barra-relleno { height: 100%; width: 0; background: linear-gradient(90deg, var(--acento), #c05bd6); border-radius: 99px; transition: width .4s ease; }
+  .progreso a { font-size: .9rem; white-space: nowrap; }
+
+  /* Portada */
+  .portada { padding: 2.2rem 0 1rem; }
+  .portada .sub { color: var(--texto-2); font-size: 1.1rem; }
+  .aviso-correo { background: var(--ojo-suave); color: var(--ojo); border-radius: var(--radio); padding: .8rem 1rem; margin: 1rem 0; font-weight: 500; }
+  .tarjeta { background: var(--papel); border: 1px solid var(--borde); border-radius: var(--radio); padding: 1.1rem 1.2rem; margin: 1rem 0; }
+  .leyenda { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: .5rem .9rem; margin: .4rem 0 0; padding: 0; list-style: none; }
+  .leyenda li { margin: 0; }
+  .indice { list-style: none; padding: 0; margin: 0; display: grid; gap: .35rem; }
+  .indice a { display: flex; justify-content: space-between; gap: 1rem; text-decoration: none; color: var(--texto); padding: .45rem .7rem; border-radius: 8px; background: var(--papel-2); }
+  .indice a:hover { outline: 2px solid var(--acento); }
+  .indice .cuenta { color: var(--texto-2); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .indice .completa .cuenta { color: var(--ok); font-weight: 650; }
+
+  /* Mis datos */
+  .datos { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: .3rem 1rem; }
+  .datos label { display: block; font-size: .9rem; font-weight: 600; margin: .4rem 0 .2rem; }
+  .datos input { width: 100%; font: inherit; font-size: .95rem; padding: .5rem .65rem; border: 1px solid var(--borde); border-radius: 8px; background: var(--papel); color: var(--texto); }
+  .datos small { color: var(--texto-3); display: block; margin-top: .15rem; }
+
+  /* Tareas y pasos */
+  .tarea { margin: 2.2rem 0 0; }
+  .tarea-cabecera { display: flex; align-items: center; gap: .8rem; margin-bottom: .3rem; }
+  .tarea-numero { flex: none; width: 2.4rem; height: 2.4rem; border-radius: 50%; display: grid; place-items: center; background: var(--acento); color: var(--acento-texto); font-weight: 700; }
+  .tarea.completa .tarea-numero { background: var(--ok); }
+  .tarea-progreso { color: var(--texto-2); font-size: .9rem; font-variant-numeric: tabular-nums; }
+  .tarea-intro { color: var(--texto-2); margin: .3rem 0 .6rem 3.2rem; }
+  .paso { background: var(--papel); border: 1px solid var(--borde); border-left: 5px solid var(--borde); border-radius: var(--radio); padding: 1rem 1.1rem; margin: .8rem 0; }
+  .paso.hecho { border-left-color: var(--ok); }
+  .paso.hecho > .paso-cabecera h3 { color: var(--texto-2); }
+  .paso-cabecera { display: flex; justify-content: space-between; align-items: flex-start; gap: .8rem; margin-bottom: .6rem; }
+  .paso-cabecera h3 { padding-top: .15rem; }
+  .paso-id { color: var(--texto-3); font-weight: 600; margin-right: .3rem; }
+  .marcar { flex: none; display: inline-flex; align-items: center; gap: .45rem; font-size: .92rem; font-weight: 650; cursor: pointer; border: 1px solid var(--borde); border-radius: 99px; padding: .3rem .8rem .3rem .55rem; user-select: none; background: var(--papel); }
+  .marcar input { width: 1.2rem; height: 1.2rem; accent-color: var(--ok); margin: 0; cursor: pointer; }
+  .paso.hecho .marcar { background: var(--ok-suave); border-color: var(--ok); color: var(--ok); }
+  .opcional { font-size: .78rem; font-weight: 700; color: var(--texto-3); border: 1px solid var(--borde); border-radius: 99px; padding: .05rem .5rem; margin-left: .3rem; vertical-align: middle; }
+
+  .caja { border-radius: 10px; padding: .7rem .9rem; margin: .8rem 0; font-size: .96rem; }
+  .caja > :last-child { margin-bottom: 0; }
+  .caja-titulo { font-weight: 700; display: block; margin-bottom: .25rem; }
+  .ver { background: var(--ok-suave); }
+  .ver .caja-titulo { color: var(--ok); }
+  .otra { background: var(--ojo-suave); }
+  .otra .caja-titulo { color: var(--ojo); }
+  .miguel { background: var(--miguel-suave); }
+  .miguel .caja-titulo { color: var(--miguel); }
+  .seguro { background: var(--peligro-suave); }
+  .seguro .caja-titulo { color: var(--peligro); }
+  .porque { background: var(--papel-2); }
+
+  .codigo { position: relative; margin: .6rem 0; }
+  .codigo pre { margin: 0; background: #1e1d2b; color: #f3f1ff; border-radius: 10px; padding: .85rem 5.5rem .85rem 1rem; overflow-x: auto; font-size: .9rem; line-height: 1.5; white-space: pre-wrap; word-break: break-word; }
+  .codigo .copiar { position: absolute; top: .45rem; right: .45rem; }
+  .boton { font: inherit; font-size: .88rem; font-weight: 650; border: 1px solid var(--borde); background: var(--papel); color: var(--texto); padding: .35rem .75rem; border-radius: 8px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: .35rem; }
+  .boton:hover { border-color: var(--acento); }
+  .boton-principal { background: var(--acento); border-color: var(--acento); color: var(--acento-texto); }
+  .boton-wa { background: #128c4a; border-color: #128c4a; color: #fff; }
+  .acciones { display: flex; flex-wrap: wrap; gap: .5rem; margin: .7rem 0; }
+  .mensaje { white-space: pre-wrap; background: var(--papel-2); border-radius: 10px; padding: .9rem 1rem; font-size: .95rem; margin: .6rem 0; }
+
+  table { width: 100%; border-collapse: collapse; font-size: .93rem; margin: .5rem 0 .8rem; }
+  th, td { text-align: left; padding: .45rem .55rem; border-bottom: 1px solid var(--borde); vertical-align: top; }
+  th { color: var(--texto-2); }
+
+  /* Final */
+  .final { border: 2px solid var(--acento); }
+  .carta { font-size: 1.05rem; line-height: 1.7; }
+  .carta p { margin-bottom: 1rem; }
+  .firma { font-weight: 700; font-size: 1.15rem; }
+  .celebracion { display: none; text-align: center; font-size: 1.3rem; font-weight: 700; padding: 1rem; border-radius: var(--radio); background: linear-gradient(90deg, var(--acento-suave), var(--ok-suave)); margin: 1rem 0; }
+  body.terminado .celebracion { display: block; }
+  @media (prefers-reduced-motion: no-preference) {
+    body.terminado .celebracion { animation: brillo 2.4s ease-in-out infinite; }
+    @keyframes brillo { 50% { transform: scale(1.02); } }
+  }
+  .toast { position: fixed; left: 50%; bottom: 1.2rem; transform: translateX(-50%); background: var(--texto); color: var(--fondo); padding: .6rem 1rem; border-radius: 8px; font-weight: 600; opacity: 0; pointer-events: none; transition: opacity .2s; z-index: 20; }
+  .toast.visible { opacity: 1; }
+  .pie { color: var(--texto-3); font-size: .85rem; text-align: center; margin-top: 3rem; }
+
+  @media (max-width: 600px) {
+    body { font-size: 16px; }
+    /* En el móvil, las tablas se leen como fichas: una fila debajo de otra */
+    table, tbody, tr, td { display: block; width: 100%; }
+    tr:first-child:has(th) { display: none; }
+    tr { border-bottom: 1px solid var(--borde); padding: .5rem 0; }
+    td { border: 0; padding: .15rem 0; }
+    td:first-child { font-weight: 700; }
+    .tarea-intro { margin-left: 0; }
+    .paso-cabecera { flex-direction: column; }
+    .progreso a { display: none; }
+  }
+  @media print {
+    .progreso, .copiar, .acciones, .toast { display: none !important; }
+    .paso { break-inside: avoid; }
+    body { background: #fff; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progreso" role="region" aria-label="Tu progreso">
+  <div class="progreso-dentro">
+    <span class="progreso-texto" id="progreso-texto">0 de 0 pasos</span>
+    <div class="barra" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="barra"><div class="barra-relleno" id="barra-relleno"></div></div>
+    <a href="#siguiente" id="ir-siguiente">Ir al siguiente paso ↓</a>
+  </div>
+</div>
+
+<div class="envoltura">
+
+<header class="portada">
+  <h1>Hola, Valentina 👋</h1>
+  <p class="sub">Con esta guía dejas listo <strong>tu CRM</strong>, tu <strong>Antigravity</strong> y tus cuentas. Al terminar podrás buscar negocios sin web, diseñarles demos y contactarles. Es el trabajo que hacía Harvey, pero hecho por ti.</p>
+  <div class="aviso-correo">
+    📥 <strong>Si estás leyendo esto en el correo:</strong> descarga el archivo y ábrelo con <strong>Chrome</strong> o <strong>Edge</strong> (doble clic). Así se guardan las casillas que marques y puedes hacerlo en varios días.
+  </div>
+  <div class="tarjeta">
+    <p><strong>Cómo funciona:</strong> son <span id="total-tareas">10</span> tareas y unos <span id="total-pasos">40</span> pasos. Cada paso explica <em>qué</em> haces, <em>dónde</em> haces clic y <em>qué</em> deberías ver. Cuando lo termines, pulsa <span class="clic">✓ Hecho</span> y la barra de arriba avanza. Calcula unas <strong>3 horas</strong> en total. No hace falta hacerlo todo de una vez.</p>
+    <ul class="leyenda">
+      <li>✅ <strong>Deberías ver</strong>: así sabes que ha ido bien.</li>
+      <li>⚠️ <strong>Si ves otra cosa</strong>: qué hacer si no sale igual.</li>
+      <li>🤝 <strong>Necesitas a Miguel</strong>: un paso que hace él.</li>
+      <li>🔒 <strong>Seguridad</strong>: importante, léelo siempre.</li>
+    </ul>
+  </div>
+  <div class="tarjeta seguro caja">
+    <span class="caja-titulo">🔒 La regla de oro</span>
+    <p>Las contraseñas y las claves van a <strong>Bitwarden</strong> y al archivo <code>.env.local</code>. <strong>Nunca</strong> al chat de Antigravity, a un WhatsApp, a un correo, a una captura ni a esta guía. Esta guía no guarda ninguna clave, solo tus casillas y los datos que no son secretos.</p>
+  </div>
+  <nav class="tarjeta" aria-label="Índice">
+    <h2>Índice</h2>
+    <ol class="indice" id="indice"></ol>
+  </nav>
+</header>
+
+<!-- =================================================================== -->
+<section class="tarea" id="t0" data-tarea="0" data-titulo="Antes de empezar">
+  <div class="tarea-cabecera"><span class="tarea-numero">0</span><div><h2>Antes de empezar</h2><span class="tarea-progreso"></span></div></div>
+  <p class="tarea-intro">Dos minutos para entender cuatro palabras y apuntar tus datos.</p>
+
+  <article class="paso" data-paso="0.1" data-titulo="Las 6 palabras que vas a leer">
+    <div class="paso-cabecera"><h3><span class="paso-id">0.1</span>Las 6 palabras que vas a leer</h3></div>
+    <table>
+      <tr><th>Palabra</th><th>Qué es</th></tr>
+      <tr><td><strong>Repositorio</strong> (repo)</td><td>La carpeta del proyecto en GitHub, con todo su historial. El nuestro es <code>valentina-call-dashboard</code>.</td></tr>
+      <tr><td><strong>Terminal</strong> (PowerShell)</td><td>La ventana donde escribes órdenes al ordenador. Escribes, pulsas <kbd>Enter</kbd> y te responde.</td></tr>
+      <tr><td><strong>Rama</strong> y <strong>Pull Request</strong></td><td>Una rama es una copia para trabajar sin tocar lo publicado. El Pull Request es pedir que esa copia se una a lo publicado; Miguel la revisa y la acepta.</td></tr>
+      <tr><td><strong>Supabase</strong></td><td>La base de datos del CRM: guarda negocios, llamadas y demos, y decide quién puede ver qué.</td></tr>
+      <tr><td><strong>Cloudflare</strong></td><td>Publica en internet el CRM y tus demos, gratis.</td></tr>
+      <tr><td><strong>Clave pública / secreta</strong></td><td>La pública puede ir en la web (los datos los protegen reglas). La secreta <strong>nunca</strong> se usa en este proyecto.</td></tr>
+    </table>
+  </article>
+
+  <article class="paso" data-paso="0.2" data-titulo="Apunta tus datos (no secretos)">
+    <div class="paso-cabecera"><h3><span class="paso-id">0.2</span>Apunta tus datos (no secretos)</h3></div>
+    <p>Rellena lo que sepas. La guía los usará para preparar los comandos y los mensajes a Miguel. Lo que no sepas aún, lo rellenas más tarde: te avisaremos. <strong>Aquí nunca van contraseñas ni claves.</strong></p>
+    <div class="datos">
+      <div><label for="d-nombre">Tu nombre completo</label><input id="d-nombre" data-dato="nombre" value="Valentina Hernández" autocomplete="off"></div>
+      <div><label for="d-correo">Tu correo</label><input id="d-correo" data-dato="correo" type="email" placeholder="tucorreo@gmail.com" autocomplete="off"><small>El que usarás en GitHub, Supabase, Cloudflare y el CRM.</small></div>
+      <div><label for="d-github">Tu usuario de GitHub</label><input id="d-github" data-dato="github" placeholder="valentina-xxx" autocomplete="off"><small>Lo verás en el paso 2.1.</small></div>
+      <div><label for="d-miguel">Correo de Miguel</label><input id="d-miguel" data-dato="correo_miguel" type="email" placeholder="el correo que Miguel usa para Supabase" autocomplete="off"><small>Pregúntaselo si dudas: tiene que ser el mismo en Supabase y en el CRM.</small></div>
+      <div><label for="d-agente">Correo del agente</label><input id="d-agente" data-dato="correo_agente" type="email" placeholder="se rellena solo" autocomplete="off"><small>Si lo dejas vacío, se usa tu correo con «+agente» (ej.: nombre+agente@gmail.com).</small></div>
+      <div><label for="d-supabase">Dirección de tu Supabase</label><input id="d-supabase" data-dato="url_supabase" placeholder="https://xxxx.supabase.co" autocomplete="off"><small>La consigues en el paso 5.8.</small></div>
+      <div><label for="d-crm">Dirección del CRM</label><input id="d-crm" data-dato="url_crm" value="https://valentina-crm.pages.dev" autocomplete="off"><small>Cámbiala solo si Miguel te da otra en el paso 6.4.</small></div>
+      <div><label for="d-demos">Dirección de las demos</label><input id="d-demos" data-dato="url_demos" value="https://mavie-demos.pages.dev" autocomplete="off"></div>
+    </div>
+  </article>
+</section>
+
+<!-- =================================================================== -->
+<section class="tarea" id="t1" data-tarea="1" data-titulo="Tu ordenador">
+  <div class="tarea-cabecera"><span class="tarea-numero">1</span><div><h2>Tu ordenador</h2><span class="tarea-progreso"></span></div></div>
+  <p class="tarea-intro">Instalas las herramientas básicas. Si ya hiciste la guía de la Semana 0, casi todo estará hecho: compruébalo y marca.</p>
+
+  <article class="paso" data-paso="1.1" data-titulo="Bitwarden listo">
+    <div class="paso-cabecera"><h3><span class="paso-id">1.1</span>Bitwarden listo (tu caja fuerte de contraseñas)</h3></div>
+    <p>¿Ya tienes Bitwarden? Marca el paso y sigue. Si no:</p>
+    <ol>
+      <li>Entra en <a href="https://bitwarden.com/" target="_blank" rel="noopener noreferrer">bitwarden.com</a> y crea la cuenta (plan gratuito). La <strong>contraseña maestra</strong> es la única que tendrás que recordar: hazla larga (una frase de 4-5 palabras) y no la escribas en ningún sitio digital.</li>
+      <li>Instala la extensión para Chrome o Edge, y la app en el móvil.</li>
+      <li>Activa la verificación en dos pasos: en la web de Bitwarden, <span class="clic">Configuración</span> → <span class="clic">Seguridad</span> → <span class="clic">Inicio de sesión en dos pasos</span> → <span class="clic">Aplicación de autenticación</span>.</li>
+    </ol>
+    <div class="caja porque"><span class="caja-titulo">💡 Cómo generar una contraseña</span>En la extensión de Bitwarden, pestaña <span class="clic">Generador</span>: longitud 20 o más. La copias, la pegas donde haga falta y la guardas como elemento nuevo con un nombre claro (ej.: "Cloudflare - mi cuenta").</div>
+  </article>
+
+  <article class="paso" data-paso="1.2" data-titulo="Abrir PowerShell y permitir scripts">
+    <div class="paso-cabecera"><h3><span class="paso-id">1.2</span>Abrir PowerShell y permitir los scripts</h3></div>
+    <ol>
+      <li>Pulsa la tecla <kbd>Windows</kbd>, escribe <code>PowerShell</code> y haz clic en <span class="clic">Windows PowerShell</span>. No elijas "como administrador".</li>
+      <li>Se abre una ventana con texto. Copia este comando (botón <span class="clic">Copiar</span>), haz clic en la ventana, pégalo con clic derecho o <kbd>Ctrl</kbd>+<kbd>V</kbd> y pulsa <kbd>Enter</kbd>:</li>
+    </ol>
+    <div class="codigo"><pre><code>Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned</code></pre><button class="boton copiar" type="button">Copiar</button></div>
+    <ol start="3"><li>Si pregunta <em>"¿Desea cambiar la directiva de ejecución?"</em>, escribe <kbd>S</kbd> y pulsa <kbd>Enter</kbd>. Si está en inglés, escribe <kbd>Y</kbd>.</li></ol>
+    <div class="caja porque"><span class="caja-titulo">💡 Por qué</span>Windows bloquea por defecto los scripts, y <code>npm</code> (que instalarás ahora) usa uno. Así solo se permiten los de tu ordenador y los firmados.</div>
+    <div class="caja ver"><span class="caja-titulo">✅ Deberías ver</span>Ningún mensaje en rojo. La ventana vuelve a esperar con <code>PS C:\Users\...&gt;</code>.</div>
+    <div class="caja otra"><span class="caja-titulo">⚠️ Si ves otra cosa</span>Si dice que la directiva ya está definida o algo parecido: no pasa nada, sigue.</div>
+  </article>
+
+  <article class="paso" data-paso="1.3" data-titulo="Instalar Git y Node.js">
+    <div class="paso-cabecera"><h3><span class="paso-id">1.3</span>Instalar Git y Node.js</h3></div>
+    <p>En la misma ventana de PowerShell, de uno en uno (copia, pega, <kbd>Enter</kbd> y espera a que termine):</p>
+    <div class="codigo"><pre><code>winget install --id Git.Git -e --source winget</code></pre><button class="boton copiar" type="button">Copiar</button></div>
+    <div class="codigo"><pre><code>winget install --id OpenJS.NodeJS.LTS -e --source winget</code></pre><button class="boton copiar" type="button">Copiar</button></div>
+    <ul>
+      <li>Si pregunta si aceptas los términos de los orígenes, escribe <kbd>S</kbd> (o <kbd>Y</kbd>) y <kbd>Enter</kbd>.</li>
+      <li>Si Windows pregunta "¿Quieres permitir que esta aplicación haga cambios?", pulsa <span class="clic">Sí</span>.</li>
+    </ul>
+    <div class="caja ver"><span class="caja-titulo">✅ Deberías ver</span><em>"Instalado correctamente"</em>, o <em>"Se encontró un paquete existente ya instalado"</em> si ya lo tenías. Las dos cosas están bien.</div>
+    <div class="caja otra"><span class="caja-titulo">⚠️ Si ves otra cosa</span>Si dice que <code>winget</code> no se reconoce, instálalos a mano: Git desde <a href="https://git-scm.com/download/win" target="_blank" rel="noopener noreferrer">git-scm.com</a> y Node.js (versión <strong>LTS</strong>) desde <a href="https://nodejs.org/es" target="_blank" rel="noopener noreferrer">nodejs.org</a>. En los instaladores, pulsa siempre <span class="clic">Next</span> con las opciones que vienen.</div>
+  </article>
+
+  <article class="paso" data-paso="1.4" data-titulo="Comprobar las instalaciones">
+    <div class="paso-cabecera"><h3><span class="paso-id">1.4</span>Comprobar que todo está instalado</h3></div>
+    <ol>
+      <li><strong>Cierra PowerShell</strong> (la X) y ábrelo otra vez, como en el paso 1.2. Esto es importante: si no, no "ve" lo recién instalado.</li>
+      <li>Escribe estos tres comandos, uno a uno:</li>
+    </ol>
+    <div class="codigo"><pre><code>git --version
+node --version
+npm --version</code></pre><button class="boton copiar" type="button">Copiar</button></div>
+    <div class="caja ver"><span class="caja-titulo">✅ Deberías ver</span>Algo como <code>git version 2.4x…</code>, <code>v22.x.x</code> (o un número mayor, como v24) y un número de npm, como <code>10.x.x</code>.</div>
+    <div class="caja otra"><span class="caja-titulo">⚠️ Si ves otra cosa</span>
+      <ul>
+        <li><em>"no se reconoce como nombre de un cmdlet"</em>: cierra y abre PowerShell otra vez. Si sigue, reinicia el ordenador.</li>
+        <li>Si Node es <code>v18</code> o <code>v20</code>, actualízalo: <code>winget upgrade --id OpenJS.NodeJS.LTS</code></li>
+      </ul>
+    </div>
+  </article>
+
+  <article class="paso" data-paso="1.5" data-titulo="Presentarte a Git">
+    <div class="paso-cabecera"><h3><span class="paso-id">1.5</span>Presentarte a Git</h3></div>
+    <p>Git firma cada cambio que guardas con tu nombre y tu correo. Estos comandos ya llevan tus datos del paso 0.2:</p>
+    <div class="codigo"><pre><code data-plantilla='git config --global user.name "«nombre»"
+git config --global user.email "«correo»"'></code></pre><button class="boton copiar" type="button">Copiar</button></div>
+    <div class="caja ver"><span class="caja-titulo">✅ Comprueba</span>Escribe <code>git config --global --list</code> y verás <code>user.name=…</code> y <code>user.email=…</code> con tus datos.</div>
+  </article>
+</section>
+
+<!-- =================================================================== -->
+<section class="tarea" id="t2" data-tarea="2" data-titulo="GitHub">
+  <div class="tarea-cabecera"><span class="tarea-numero">2</span><div><h2>GitHub</h2><span class="tarea-progreso"></span></div></div>
+  <p class="tarea-intro">Tu cuenta y tu acceso al repositorio del CRM.</p>
+
+  <article class="paso" data-paso="2.1" data-titulo="Cuenta de GitHub con verificación en dos pasos">
+    <div class="paso-cabecera"><h3><span class="paso-id">2.1</span>Tu cuenta de GitHub, con verificación en dos pasos</h3></div>
+    <ol>
+      <li>Entra en <a href="https://github.com/login" target="_blank" rel="noopener noreferrer">github.com</a>. Si no tienes cuenta: <span class="clic">Sign up</span>, con tu correo y una contraseña de Bitwarden.</li>
+      <li>Tu <strong>usuario</strong> sale arriba a la derecha al pulsar tu foto (avatar). Escríbelo en el paso 0.2.</li>
+      <li>Si aún no tienes verificación en dos pasos: avatar → <span class="clic">Settings</span> → <span class="clic">Password and authentication</span> → <span class="clic">Enable two-factor authentication</span>. Elige la app del móvil (Google o Microsoft Authenticator), escanea el código QR y escribe el número que te da.</li>
+      <li>GitHub te da unos <strong>códigos de recuperación</strong>: guárdalos en Bitwarden. Sirven si pierdes el móvil.</li>
+    </ol>
+    <div class="caja ver"><span class="caja-titulo">✅ Deberías ver</span>En <em>Password and authentication</em>: "Two-factor authentication: <strong>Enabled</strong>".</div>
+  </article>
+
+  <article class="paso" data-paso="2.2" data-titulo="Pedir acceso al repo a Miguel">
+    <div class="paso-cabecera"><h3><span class="paso-id">2.2</span>Pedir a Miguel que te dé acceso al repositorio</h3></div>
+    <div class="caja miguel"><span class="caja-titulo">🤝 Necesitas a Miguel</span>Envíale este mensaje (ya lleva tu usuario de GitHub):</div>
+    <div class="mensaje" data-plantilla="Hola Miguel 👋 Mi usuario de GitHub es «github». ¿Me añades como colaboradora al repositorio valentina-call-dashboard?
+En GitHub: el repositorio → Settings → Collaborators → Add people → «github» → rol Write. ¡Gracias!"></div>
+    <div class="acciones"><button class="boton copiar-mensaje" type="button">Copiar mensaje</button><a class="boton boton-wa enviar-wa" href="#" target="_blank" rel="noopener noreferrer">Enviar por WhatsApp</a></div>
+    <p>Mientras responde, puedes seguir con la tarea 3. Descargar el proyecto no necesita permiso porque el repositorio es público.</p>
+  </article>
+
+  <article class="paso" data-paso="2.3" data-titulo="Aceptar la invitación de GitHub">
+    <div class="paso-cabecera"><h3><span class="paso-id">2.3</span>Aceptar la invitación</h3></div>
+    <ol>
+      <li>Te llegará un correo de GitHub: <em>"mavieiasolutions-a11y has invited you to collaborate on…"</em>. Pulsa <span class="clic">View invitation</span>.</li>
+      <li>Pulsa <span class="clic">Accept invitation</span>.</li>
+    </ol>
+    <p>¿No encuentras el correo? Abre directamente <a href="https://github.com/mavieiasolutions-a11y/valentina-call-dashboard/invitations" target="_blank" rel="noopener noreferrer">la página de invitaciones del repositorio</a>, con tu sesión de GitHub iniciada.</p>
+    <div class="caja ver"><span class="caja-titulo">✅ Deberías ver</span>El repositorio con sus carpetas (<code>crm</code>, <code>demos</code>, <code>docs</code>…). Arriba, la pestaña <strong>Settings</strong> no aparece: es normal, eres colaboradora, no dueña.</div>
+  </article>
+</section>
+
+<!-- =================================================================== -->
+<section class="tarea" id="t3" data-tarea="3" data-titulo="El proyecto en tu ordenador">
+  <div class="tarea-cabecera"><span class="tarea-numero">3</span><div><h2>El proyecto en tu ordenador</h2><span class="tarea-progreso"></span></div></div>
+  <p class="tarea-intro">Descargas el CRM, instalas sus piezas y lo pruebas con datos de ejemplo.</p>
+
+  <article class="paso" data-paso="3.1" data-titulo="Descargar el proyecto (clonar)">
+    <div class="paso-cabecera"><h3><span class="paso-id">3.1</span>Descargar el proyecto (git clone)</h3></div>
+    <p>En PowerShell, copia y pega este bloque entero y pulsa <kbd>Enter</kbd>:</p>
+    <div class="codigo"><pre><code>cd $HOME
+New-Item -ItemType Directory -Force -Path Mavie | Out-Null
+cd Mavie
+git clone https://github.com/mavieiasolutions-a11y/valentina-call-dashboard.git valentina-crm
+cd valentina-crm</code></pre><button class="boton copiar" type="button">Copiar</button></div>
+    <div class="caja porque"><span class="caja-titulo">💡 Qué hace</span>Crea la carpeta <code>C:\Users\TuUsuario\Mavie</code>, que está fuera de OneDrive para que no se líe con la sincronización. Descarga dentro el proyecto, en la carpeta <code>valentina-crm</code>, y entra en ella.</div>
+    <div class="caja ver"><span class="caja-titulo">✅ Deberías ver</span><code>Cloning into 'valentina-crm'...</code> y, al final, el cursor en <code>PS C:\Users\…\Mavie\valentina-crm&gt;</code>.</div>
+    <div class="caja otra"><span class="caja-titulo">⚠️ Si ves otra cosa</span><em>"destination path 'valentina-crm' already exists"</em>: ya lo tenías descargado. Escribe <code>cd valentina-crm</code> y luego <code>git pull</code> para actualizarlo.</div>
+  </article>
+
+  <article class="paso" data-paso="3.2" data-titulo="Instalar las piezas (npm ci)">
+    <div class="paso-cabecera"><h3><span class="paso-id">3.2</span>Instalar las piezas del proyecto</h3></div>
+    <div class="codigo"><pre><code>npm ci</code></pre><button class="boton copiar" type="button">Copiar</button></div>
+    <p>Tarda 1-3 minutos. Instala las librerías que usa el proyecto (animaciones, tipografías, optimizador de imágenes…) en la carpeta <code>node_modules</code>.</p>
+    <div class="caja ver"><span class="caja-titulo">✅ Deberías ver</span><code>added … packages</code> y <code>found 0 vulnerabilities</code>. Las líneas amarillas <em>"npm warn"</em> son normales.</div>
+    <div class="caja otra"><span class="caja-titulo">⚠️ Si ves otra cosa</span><em>"npm no se reconoce"</em> o <em>"la ejecución de scripts está deshabilitada"</em>: repite los pasos 1.2 y 1.4.</div>
+  </article>
+
+  <article class="paso" data-paso="3.3" data-titulo="Probar el CRM en modo prueba">
+    <div class="paso-cabecera"><h3><span class="paso-id">3.3</span>Probar el CRM con datos de ejemplo</h3></div>
+    <div class="codigo"><pre><code>npm run crm</code></pre><button class="boton copiar" type="button">Copiar</button></div>
+    <ol>
+      <li>Cuando ponga <em>"Abriendo … en http://localhost:5500/"</em>, abre Chrome y entra en <a href="http://localhost:5500/" target="_blank" rel="noopener noreferrer">http://localhost:5500</a>.</li>
+      <li>Verás una banda amarilla: <strong>"Modo prueba"</strong>. Explora con calma: <span class="clic">Hoy</span>, <span class="clic">Negocios</span>, abre <em>Barbería El Faro</em> y pulsa <span class="clic">💬 WhatsApp</span> para ver cómo se prepara un mensaje. No se envía nada a nadie.</li>
+      <li>Para pararlo: vuelve a PowerShell y pulsa <kbd>Ctrl</kbd>+<kbd>C</kbd>. Si pregunta <em>"¿Desea terminar el trabajo por lotes (S/N)?"</em>, escribe <kbd>S</kbd>.</li>
+    </ol>
+    <div class="caja ver"><span class="caja-titulo">✅ Deberías ver</span>El CRM con negocios de ejemplo. Es exactamente el que usarás, pero todavía sin conectar a tu base de datos.</div>
+  </article>
+</section>
+
+<!-- =================================================================== -->
+<section class="tarea" id="t4" data-tarea="4" data-titulo="Antigravity">
+  <div class="tarea-cabecera"><span class="tarea-numero">4</span><div><h2>Antigravity</h2><span class="tarea-progreso"></span></div></div>
+  <p class="tarea-intro">Tu agente abre el proyecto, lee sus instrucciones y aprende tus herramientas.</p>
+
+  <article class="paso" data-paso="4.1" data-titulo="Antigravity instalado y con tu sesión">
+    <div class="paso-cabecera"><h3><span class="paso-id">4.1</span>Antigravity instalado y con tu sesión</h3></div>
+    <ul>
+      <li><strong>Si ya lo tienes:</strong> ábrelo. Si te ofrece actualizar (<em>Update</em> / <em>Restart to update</em>), acepta.</li>
+      <li><strong>Si no:</strong> entra en <a href="https://antigravity.google/" target="_blank" rel="noopener noreferrer">antigravity.google</a> → <span class="clic">Download</span> → Windows. Abre el instalador descargado y pulsa <span class="clic">Next</span> hasta <span class="clic">Install</span>.</li>
+      <li>Al abrirlo, inicia sesión con <strong>tu cuenta de Google que tiene el plan Google AI Pro</strong>.</li>
+    </ul>
+    <div class="caja ver"><span class="caja-titulo">✅ Deberías ver</span>La ventana de Antigravity con tu cuenta. Abajo a la izquierda, o en el menú de la cuenta, aparece tu correo.</div>
+  </article>
+
+  <article class="paso" data-paso="4.2" data-titulo="Permisos: que te pregunte antes de ejecutar">
+    <div class="paso-cabecera"><h3><span class="paso-id">4.2</span>Que Antigravity te pida permiso antes de ejecutar comandos</h3></div>
+    <p>Si es la primera vez que lo abres, el asistente de inicio te pregunta cómo quieres trabajar. Si ya lo configuraste, abre los ajustes: <span class="clic">⚙ Settings</span>, o <kbd>Ctrl</kbd>+<kbd>,</kbd>, y busca <code>terminal</code>.</p>
+    <ul>
+      <li><strong>Ejecución de comandos en la terminal</strong> (<em>Terminal execution / Terminal command auto execution</em>): elige la opción en la que <strong>te pide permiso</strong>. Según la versión se llama <em>Request review</em>, <em>Off</em> o <em>Ask</em>.</li>
+      <li><strong>Revisión</strong> (<em>Review policy</em>): <em>Request review</em> o <em>Agent decides</em>.</li>
+    </ul>
+    <div class="caja seguro"><span class="caja-titulo">🔒 Nunca elijas "Turbo" ni "Always proceed"</span>Con esas opciones el agente ejecuta lo que quiera sin preguntarte. Si te pide permiso, ves cada comando y aprendes qué hace. Y si algo no te cuadra, le dices que no.</div>
+  </article>
+
+  <article class="paso" data-paso="4.3" data-titulo="Abrir la carpeta del proyecto">
+    <div class="paso-cabecera"><h3><span class="paso-id">4.3</span>Abrir la carpeta del proyecto</h3></div>
+    <ol>
+      <li>Menú <span class="clic">File</span> → <span class="clic">Open Folder…</span> En la versión de escritorio de la app puede llamarse <em>Open workspace</em> o <em>Add workspace</em>.</li>
+      <li>Ve a <code>C:\Users\TuUsuario\Mavie\valentina-crm</code>, selecciona la carpeta <strong>valentina-crm</strong> y pulsa <span class="clic">Seleccionar carpeta</span>.</li>
+      <li>Si pregunta <em>"Do you trust the authors of the files in this folder?"</em>, pulsa <span class="clic">Yes, I trust the authors</span>. Es tu propio proyecto.</li>
+    </ol>
+    <div class="caja ver"><span class="caja-titulo">✅ Deberías ver</span>A la izquierda, la lista de archivos: <code>.agents</code>, <code>crm</code>, <code>demos</code>, <code>docs</code>, <code>AGENTS.md</code>…</div>
+    <div class="caja otra"><span class="caja-titulo">⚠️ Si ves otra cosa</span>Si ves solo una carpeta <code>valentina-crm</code> que hay que desplegar, has abierto la carpeta de arriba (<code>Mavie</code>). Repite y elige <code>valentina-crm</code>: si no, Antigravity no encuentra sus instrucciones.</div>
+  </article>
+
+  <article class="paso" data-paso="4.4" data-titulo="Terminal de Antigravity y primeras pruebas">
+    <div class="paso-cabecera"><h3><span class="paso-id">4.4</span>La terminal de Antigravity</h3></div>
+    <p>Antigravity tiene su propia terminal: así no necesitas la ventana de PowerShell. Menú <span class="clic">Terminal</span> → <span class="clic">New Terminal</span>. Se abre abajo. Escribe:</p>
+    <div class="codigo"><pre><code>npm test</code></pre><button class="boton copiar" type="button">Copiar</button></div>
+    <div class="caja ver"><span class="caja-titulo">✅ Deberías ver</span>Al final, <code># pass</code> con un número y <code># fail 0</code>. Son las pruebas automáticas que comprueban las reglas del CRM.</div>
+  </article>
+
+  <article class="paso" data-paso="4.5" data-titulo="Comprobar que Antigravity te conoce">
+    <div class="paso-cabecera"><h3><span class="paso-id">4.5</span>Comprobar que Antigravity te conoce</h3></div>
+    <p>En el chat del agente (normalmente el panel de la derecha), escribe:</p>
+    <div class="codigo"><pre><code>Lee AGENTS.md y dime en 5 líneas qué sabes de mi trabajo, qué reglas de seguridad tienes que cumplir y qué skills tienes disponibles.</code></pre><button class="boton copiar" type="button">Copiar</button></div>
+    <p>Después escribe solo <code>/</code> en el chat: tiene que salir la lista de tus skills.</p>
+    <div class="caja ver"><span class="caja-titulo">✅ Deberías ver</span>Que habla de buscar negocios sin web en el Campo de Gibraltar y de diseñar demos. Y skills como <code>buscar-negocios</code>, <code>nueva-demo</code>, <code>disenar-demo</code>, <code>crear-estilo</code>, <code>publicar-demo</code>, <code>plan-del-dia</code>, <code>revisar-seguridad</code> y <code>explicar-api</code>.</div>
+    <div class="caja otra"><span class="caja-titulo">⚠️ Si ves otra cosa</span>Si no salen las skills: comprueba que abriste la carpeta <code>valentina-crm</code> (paso 4.3) y que Antigravity está actualizado. Si aun así no salen, puedes pedírselas por su nombre: <em>"usa la skill de .agents/skills/buscar-negocios"</em>.</div>
+  </article>
+</section>
+
+<!-- =================================================================== -->
+<section class="tarea" id="t5" data-tarea="5" data-titulo="Supabase (base de datos)">
+  <div class="tarea-cabecera"><span class="tarea-numero">5</span><div><h2>Supabase: tu base de datos</h2><span class="tarea-progreso"></span></div></div>
+  <p class="tarea-intro">Creas la base de datos del CRM, sus reglas de seguridad y los usuarios. Es la tarea más larga: tómatela con calma.</p>
+
+  <div class="caja porque"><span class="caja-titulo">💡 Dos cosas distintas que se llaman parecido</span><strong>Tu cuenta de Supabase</strong> sirve para administrar la base de datos (la crearás en 5.1). <strong>Tu usuario del CRM</strong> sirve para entrar en el CRM (lo crearás en 5.5). Usa <strong>el mismo correo</strong> en las dos: el Supabase gratis solo envía correos de "he olvidado la contraseña" a los miembros del equipo.</div>
+
+  <article class="paso" data-paso="5.1" data-titulo="Cuenta de Supabase">
+    <div class="paso-cabecera"><h3><span class="paso-id">5.1</span>Crear tu cuenta de Supabase</h3></div>
+    <ol>
+      <li>Entra en <a href="https://supabase.com/dashboard/sign-up" target="_blank" rel="noopener noreferrer">supabase.com</a>.</li>
+      <li>Pulsa <span class="clic">Continue with GitHub</span> (recomendado: usa tu cuenta de GitHub, que ya tiene verificación en dos pasos) y luego el botón verde <span class="clic">Authorize…</span> de GitHub. También puedes registrarte con correo y contraseña de Bitwarden: en ese caso, confirma el correo que te envían.</li>
+    </ol>
+    <div class="caja ver"><span class="caja-titulo">✅ Deberías ver</span>El panel de Supabase (<em>dashboard</em>), que te propone crear una organización o un proyecto.</div>
+  </article>
+
+  <article class="paso" data-paso="5.2" data-titulo="Organización y proyecto">
+    <div class="paso-cabecera"><h3><span class="paso-id">5.2</span>Crear la organización y el proyecto</h3></div>
+    <p><strong>Organización</strong> (si te la pide):</p>
+    <ul>
+      <li><em>Name</em>: <code>Mavie IA Solutions</code></li>
+      <li><em>Type</em>: <span class="clic">Company</span></li>
+      <li><em>Plan</em>: <span class="clic">Free</span></li>
+    </ul>
+    <p>Pulsa <span class="clic">Create organization</span>.</p>
+    <p><strong>Proyecto</strong>: <span class="clic">New project</span>.</p>
+    <ul>
+      <li><em>Organization</em>: <code>Mavie IA Solutions</code></li>
+      <li><em>Project name</em>: <code>valentina-crm</code></li>
+      <li><em>Database Password</em>: pulsa <span class="clic">Generate a password</span>, cópiala y guárdala en Bitwarden como "Supabase valentina-crm – base de datos". Casi nunca la necesitarás, pero no la pierdas.</li>
+      <li><em>Region</em>: una de <strong>Europa</strong>, mejor <code>Central EU (Frankfurt)</code>. Así los datos se quedan en la UE (RGPD).</li>
+      <li>Si ves opciones de seguridad (<em>Security options</em>, <em>Data API</em>…), deja <strong>Data API activado</strong> y el resto como viene.</li>
+    </ul>
+    <p>Pulsa <span class="clic">Create new project</span>.</p>
+    <div class="caja ver"><span class="caja-titulo">✅ Deberías ver</span><em>"Setting up project"</em> durante 1-3 minutos y después el panel del proyecto, con el menú a la izquierda: <em>Table Editor</em>, <em>SQL Editor</em>, <em>Authentication</em>…</div>
+  </article>
+
+  <article class="paso" data-paso="5.3" data-titulo="Crear las tablas y la seguridad (SQL)">
+    <div class="paso-cabecera"><h3><span class="paso-id">5.3</span>Crear las tablas y las reglas de seguridad</h3></div>
+    <ol>
+      <li>En <strong>Antigravity</strong>, abre el archivo <code>supabase/migrations/20261104000000_crm_valentina.sql</code> (en la lista de la izquierda: <code>supabase</code> → <code>migrations</code>).</li>
+      <li>Haz clic dentro del texto, pulsa <kbd>Ctrl</kbd>+<kbd>A</kbd> (seleccionar todo) y <kbd>Ctrl</kbd>+<kbd>C</kbd> (copiar).</li>
+      <li>En <strong>Supabase</strong>, menú izquierdo: <span class="clic">SQL Editor</span> (icono <code>&gt;_</code>) → <span class="clic">+ New query</span>. Si no lo ves, el botón <span class="clic">+</span> de arriba.</li>
+      <li>Haz clic en el editor vacío y pega con <kbd>Ctrl</kbd>+<kbd>V</kbd>.</li>
+      <li>Pulsa <span class="clic">Run</span> (abajo a la derecha) o <kbd>Ctrl</kbd>+<kbd>Enter</kbd>.</li>
+      <li>Si sale un aviso de "operación destructiva" o "potential issue", pulsa <span class="clic">Run this query</span>. Es por las líneas que <em>quitan</em> permisos: es lo que queremos.</li>
+    </ol>
+    <div class="caja ver"><span class="caja-titulo">✅ Deberías ver</span><em>"Success. No rows returned"</em>. En el menú <span class="clic">Table Editor</span> aparecen 7 tablas: <code>actividades</code>, <code>busquedas</code>, <code>demos</code>, <code>equipo</code>, <code>lista_no_contactar</code>, <code>negocios</code> y <code>plantillas</code>.</div>
+    <div class="caja otra"><span class="caja-titulo">⚠️ Si ves otra cosa</span>
+      <ul>
+        <li><em>"already exists"</em>: ya se había ejecutado antes. No pasa nada; no lo ejecutes más veces.</li>
+        <li>Cualquier otro error en rojo: haz una captura y mándasela a Miguel antes de seguir.</li>
+      </ul>
+    </div>
+  </article>
+
+  <article class="paso" data-paso="5.4" data-titulo="Cerrar el registro público">
+    <div class="paso-cabecera"><h3><span class="paso-id">5.4</span>Cerrar la puerta: nadie puede registrarse solo</h3></div>
+    <ol>
+      <li>Menú izquierdo: <span class="clic">Authentication</span> → en <em>Configuration</em>, <span class="clic">Sign In / Providers</span>.</li>
+      <li>Busca <strong>Allow new users to sign up</strong> y <strong>desactívalo</strong>.</li>
+      <li>Pulsa <span class="clic">Save changes</span>.</li>
+    </ol>
+    <div class="caja porque"><span class="caja-titulo">💡 Por qué</span>Así solo entran los usuarios que crees tú (paso 5.5). Aunque alguien encuentre la dirección del CRM, no puede crearse una cuenta.</div>
+    <div class="caja otra"><span class="caja-titulo">⚠️ Si ves otra cosa</span>Si no está ahí, busca "Allow new users to sign up" dentro de <span class="clic">Authentication</span> → <span class="clic">Settings</span>.</div>
+  </article>
+
+  <article class="paso" data-paso="5.5" data-titulo="Crear los 3 usuarios del CRM">
+    <div class="paso-cabecera"><h3><span class="paso-id">5.5</span>Crear los 3 usuarios del CRM</h3></div>
+    <p><span class="clic">Authentication</span> → <span class="clic">Users</span> → <span class="clic">Add user</span> → <span class="clic">Create new user</span>. Repite tres veces:</p>
+    <table>
+      <tr><th>Usuario</th><th>Email</th><th>Contraseña (genérala en Bitwarden)</th></tr>
+      <tr><td>Tú</td><td><code data-plantilla="«correo»"></code></td><td>Guárdala como "CRM Valentina – mi usuario".</td></tr>
+      <tr><td>Miguel</td><td><code data-plantilla="«correo_miguel»"></code></td><td>Guárdala como "CRM Valentina – Miguel" y compártela con él con <strong>Bitwarden Send</strong>. También puede cambiarla él con "He olvidado la contraseña".</td></tr>
+      <tr><td>El agente de Antigravity</td><td><code data-plantilla="«correo_agente»"></code></td><td><strong>Solo letras y números</strong>: en el generador de Bitwarden desmarca los caracteres especiales (<code>!@#$%^&amp;*</code>), longitud 24. Guárdala como "CRM Valentina – agente Antigravity".</td></tr>
+    </table>
+    <p>En cada uno, marca <strong>Auto Confirm User</strong> y pulsa <span class="clic">Create user</span>.</p>
+    <div class="caja porque"><span class="caja-titulo">💡 Por qué el agente tiene su propio usuario</span>Antigravity entra en el CRM con <em>su</em> usuario, que tiene menos permisos que el tuyo. Puede buscar negocios y preparar demos, pero <strong>no</strong> registrar llamadas o WhatsApp, ni aprobar demos, ni borrar nada. Si algún día hay un problema, se le cambia la contraseña y se corta solo a él.</div>
+    <div class="caja ver"><span class="caja-titulo">✅ Deberías ver</span>Tres filas en <em>Users</em>, con esos tres correos.</div>
+  </article>
+
+  <article class="paso" data-paso="5.6" data-titulo="Dar a cada uno su rol">
+    <div class="paso-cabecera"><h3><span class="paso-id">5.6</span>Dar a cada uno su rol</h3></div>
+    <p><span class="clic">SQL Editor</span> → <span class="clic">+ New query</span>, pega esto y pulsa <span class="clic">Run</span>. Ya lleva los correos del paso 0.2: revisa que estén bien antes de ejecutarlo.</p>
+    <div class="codigo"><pre><code data-plantilla="select public.alta_equipo('«correo»', '«nombre_corto»', 'comercial');
+select public.alta_equipo('«correo_miguel»', 'Miguel', 'admin');
+select public.alta_equipo('«correo_agente»', 'Agente Antigravity', 'agente');
+select email, nombre, rol from public.equipo;"></code></pre><button class="boton copiar" type="button">Copiar</button></div>
+    <div class="caja ver"><span class="caja-titulo">✅ Deberías ver</span>Una tabla con 3 filas: tú como <code>comercial</code>, Miguel como <code>admin</code> y el agente como <code>agente</code>.</div>
+    <div class="caja otra"><span class="caja-titulo">⚠️ Si ves otra cosa</span><em>"No existe ningún usuario con el correo…"</em>: ese correo no es idéntico al del paso 5.5. Corrígelo en el paso 0.2 y vuelve a copiar el bloque.</div>
+    <div class="caja porque"><span class="caja-titulo">💡 Los roles</span><strong>admin</strong> (Miguel) aprueba demos y puede deshacer una baja. <strong>comercial</strong> (tú) busca, diseña, llama y escribe. Que otra persona apruebe tus demos es la revisión de calidad antes de enviar nada a un cliente.</div>
+  </article>
+
+  <article class="paso" data-paso="5.7" data-titulo="Invitar a Miguel a Supabase">
+    <div class="paso-cabecera"><h3><span class="paso-id">5.7</span>Invitar a Miguel a tu Supabase</h3></div>
+    <ol>
+      <li>Arriba a la izquierda, pulsa el nombre de la organización <strong>Mavie IA Solutions</strong> para ir a la organización.</li>
+      <li>Menú: <span class="clic">Team</span> (en <em>Organization settings</em>) → <span class="clic">Invite member</span>.</li>
+      <li>Email: <code data-plantilla="«correo_miguel»"></code>. Rol: <strong>Owner</strong>. Si no te deja, <strong>Administrator</strong>.</li>
+      <li>Pulsa <span class="clic">Invite</span> (o <span class="clic">Send invitation</span>).</li>
+    </ol>
+    <div class="caja miguel"><span class="caja-titulo">🤝 Avisa a Miguel</span>La invitación <strong>caduca en 24 horas</strong>: dile que la acepte desde su correo. Irá también en tu mensaje final.</div>
+  </article>
+
+  <article class="paso" data-paso="5.8" data-titulo="Apuntar la dirección del proyecto">
+    <div class="paso-cabecera"><h3><span class="paso-id">5.8</span>Apuntar la dirección del proyecto y localizar la clave pública</h3></div>
+    <ol>
+      <li>Menú izquierdo, abajo: <span class="clic">⚙ Project Settings</span> → <span class="clic">General</span>. Copia el <strong>Project ID</strong>, unas letras como <code>abcdefghijklmnop</code>.</li>
+      <li>Tu dirección es <code>https://</code> + ese ID + <code>.supabase.co</code>. Escríbela en el paso 0.2 (campo "Dirección de tu Supabase"). Ejemplo: <code>https://abcdefghijklmnop.supabase.co</code></li>
+      <li>Ahora <span class="clic">Project Settings</span> → <span class="clic">API Keys</span>. Localiza la <strong>Publishable key</strong>: empieza por <code>sb_publishable_</code> y tiene un botón para copiarla. <strong>No la copies aún</strong>: la usarás en los pasos 7.2 y 7.4.</li>
+    </ol>
+    <div class="caja otra"><span class="caja-titulo">⚠️ Si ves otra cosa</span>Si solo ves claves <em>anon</em> y <em>service_role</em> (son las antiguas), busca la pestaña o el botón <span class="clic">Create new API keys</span> y pulsa para crear las nuevas. Después aparece la <em>Publishable key</em>.</div>
+    <div class="caja seguro"><span class="caja-titulo">🔒 La clave "Secret" no se toca</span>En esa misma página hay <strong>Secret keys</strong> (<code>sb_secret_…</code>). No la copies <strong>nunca</strong>: se salta todas las reglas de seguridad. Este proyecto no la necesita en ningún sitio.</div>
+  </article>
+</section>
+
+<!-- =================================================================== -->
+<section class="tarea" id="t6" data-tarea="6" data-titulo="Cloudflare (publicar en internet)">
+  <div class="tarea-cabecera"><span class="tarea-numero">6</span><div><h2>Cloudflare: publicar en internet</h2><span class="tarea-progreso"></span></div></div>
+  <p class="tarea-intro">Tu cuenta de Cloudflare publicará el CRM y tus demos. Miguel tiene que hacer un paso: conectar GitHub, porque el repositorio es suyo.</p>
+
+  <article class="paso" data-paso="6.1" data-titulo="Cuenta de Cloudflare">
+    <div class="paso-cabecera"><h3><span class="paso-id">6.1</span>Crear tu cuenta de Cloudflare</h3></div>
+    <ol>
+      <li>Entra en <a href="https://dash.cloudflare.com/sign-up" target="_blank" rel="noopener noreferrer">dash.cloudflare.com/sign-up</a>.</li>
+      <li>Email: <code data-plantilla="«correo»"></code>. Contraseña: de Bitwarden (guárdala como "Cloudflare – mi cuenta"). Pulsa <span class="clic">Sign up</span>.</li>
+      <li>Abre el correo de Cloudflare y pulsa el enlace para <strong>verificar el correo</strong>.</li>
+      <li>Si te pregunta qué quieres hacer o te propone añadir un dominio, sáltalo (<span class="clic">Skip</span> / <span class="clic">Go to dashboard</span>). No hace falta.</li>
+      <li>Seguridad: icono de tu perfil (arriba a la derecha) → <span class="clic">My Profile</span> → <span class="clic">Authentication</span> → <span class="clic">Two-Factor Authentication</span> → app del móvil. Guarda los códigos de recuperación en Bitwarden.</li>
+    </ol>
+    <div class="caja ver"><span class="caja-titulo">✅ Deberías ver</span>El panel de Cloudflare con tu cuenta.</div>
+  </article>
+
+  <article class="paso" data-paso="6.2" data-titulo="Invitar a Miguel a Cloudflare">
+    <div class="paso-cabecera"><h3><span class="paso-id">6.2</span>Invitar a Miguel a tu Cloudflare</h3></div>
+    <ol>
+      <li>Menú izquierdo: <span class="clic">Manage account</span> → <span class="clic">Members</span> → <span class="clic">Invite</span>.</li>
+      <li>Email: <code data-plantilla="«correo_miguel»"></code></li>
+      <li>Rol: <strong>Administrator</strong>. Si solo ves una lista larga de roles, elige <strong>Administrator</strong> o <strong>Super Administrator</strong>.</li>
+      <li>Pulsa <span class="clic">Continue to summary</span> → <span class="clic">Invite</span>.</li>
+    </ol>
+    <div class="caja ver"><span class="caja-titulo">✅ Deberías ver</span>Miguel en la lista de miembros como <em>Pending</em> (pendiente) hasta que acepte.</div>
+  </article>
+
+  <article class="paso" data-paso="6.3" data-titulo="Mandar a Miguel la tarea de Cloudflare">
+    <div class="paso-cabecera"><h3><span class="paso-id">6.3</span>Mandar a Miguel la tarea de Cloudflare</h3></div>
+    <div class="caja miguel"><span class="caja-titulo">🤝 Necesitas a Miguel</span>Cloudflare solo puede conectarse a GitHub desde la cuenta <strong>dueña</strong> del repositorio, que es la de Miguel. Mándale estas instrucciones exactas: son unos 5 minutos para él.</div>
+    <div class="mensaje" data-plantilla="Miguel, te he invitado a mi cuenta de Cloudflare (mira tu correo). Necesito que conectes GitHub, porque el repo es tuyo:
+
+1) Acepta la invitación y entra en dash.cloudflare.com. Arriba a la izquierda, cambia a MI cuenta.
+2) Workers & Pages → Create application → Pages → Connect to Git → GitHub. En GitHub instala la app de Cloudflare en mavieiasolutions-a11y con «Only select repositories» → valentina-call-dashboard → Install & Authorize.
+3) Elige valentina-call-dashboard → Begin setup y pon:
+   · Project name: valentina-crm
+   · Production branch: main
+   · Framework preset: None
+   · Build command: npm ci && npm run build:crm
+   · Build output directory: crm
+   · Environment variables: NODE_VERSION = 22
+   → Save and Deploy
+4) Otra vez Create application → Pages → Connect to Git → valentina-call-dashboard → Begin setup:
+   · Project name: mavie-demos
+   · Production branch: main
+   · Framework preset: None
+   · Build command: (vacío)
+   · Build output directory: demos
+   → Save and Deploy
+5) Mándame las dos direcciones que te dé (deberían ser «url_crm» y «url_demos»).
+¡Gracias! 💜"></div>
+    <div class="acciones"><button class="boton copiar-mensaje" type="button">Copiar mensaje</button><a class="boton boton-wa enviar-wa" href="#" target="_blank" rel="noopener noreferrer">Enviar por WhatsApp</a></div>
+    <p>Mientras lo hace, puedes adelantar los pasos 7.4, 7.5 y 7.6, y la tarea 9.</p>
+  </article>
+
+  <article class="paso" data-paso="6.4" data-titulo="Comprobar las dos direcciones">
+    <div class="paso-cabecera"><h3><span class="paso-id">6.4</span>Comprobar las dos direcciones</h3></div>
+    <p>Cuando Miguel te conteste:</p>
+    <ol>
+      <li>Abre <a data-plantilla-href="«url_crm»" href="https://valentina-crm.pages.dev" target="_blank" rel="noopener noreferrer"><span data-plantilla="«url_crm»">https://valentina-crm.pages.dev</span></a>. Verás el CRM con la banda amarilla <strong>"Modo prueba"</strong>. Es lo normal en este momento: aún no lo has conectado a Supabase (lo harás en la tarea 7).</li>
+      <li>Abre <a data-plantilla-href="«url_demos»/ejemplo-barberia/" href="https://mavie-demos.pages.dev/ejemplo-barberia/" target="_blank" rel="noopener noreferrer">la demo de ejemplo</a>. Tiene que verse la web de "El Faro".</li>
+    </ol>
+    <div class="caja otra"><span class="caja-titulo">⚠️ Si las direcciones son distintas</span>Si Cloudflare les puso otro nombre (por ejemplo <code>valentina-crm-abc.pages.dev</code>), cámbialas en el paso 0.2 y pide esto a Antigravity:
+      <div class="codigo"><pre><code data-plantilla="La dirección de las demos es «url_demos». Cámbiala en crm/js/ajustes.js (demos.urlBase) y en crm/_headers (connect-src), en una rama nueva llamada ajustar-direcciones. Después ejecuta npm run seguridad y npm test, haz commit y push, y dame el enlace del Pull Request."></code></pre><button class="boton copiar" type="button">Copiar</button></div>
+    </div>
+  </article>
+</section>
+
+<!-- =================================================================== -->
+<section class="tarea" id="t7" data-tarea="7" data-titulo="Conectarlo todo">
+  <div class="tarea-cabecera"><span class="tarea-numero">7</span><div><h2>Conectarlo todo</h2><span class="tarea-progreso"></span></div></div>
+  <p class="tarea-intro">Le dices al CRM dónde está su base de datos y preparas tus claves para Antigravity.</p>
+
+  <article class="paso" data-paso="7.1" data-titulo="Supabase: dirección del CRM">
+    <div class="paso-cabecera"><h3><span class="paso-id">7.1</span>Decirle a Supabase dónde está el CRM</h3></div>
+    <ol>
+      <li>Supabase → <span class="clic">Authentication</span> → <span class="clic">URL Configuration</span>.</li>
+      <li><strong>Site URL</strong>: <code data-plantilla="«url_crm»"></code> → <span class="clic">Save changes</span>.</li>
+      <li><strong>Redirect URLs</strong> → <span class="clic">Add URL</span> → <code data-plantilla="«url_crm»/**"></code> → <span class="clic">Save URLs</span>.</li>
+    </ol>
+    <div class="caja porque"><span class="caja-titulo">💡 Por qué</span>Para que el enlace del correo "He olvidado la contraseña" te lleve a tu CRM y a ningún otro sitio.</div>
+  </article>
+
+  <article class="paso" data-paso="7.2" data-titulo="Poner la conexión en crm/config.js">
+    <div class="paso-cabecera"><h3><span class="paso-id">7.2</span>Conectar el CRM con Supabase (<code>crm/config.js</code>)</h3></div>
+    <ol>
+      <li>En Antigravity abre <code>crm/config.js</code>.</li>
+      <li>Donde pone <code>url: '',</code> escribe tu dirección entre las comillas.</li>
+      <li>En Supabase → <span class="clic">Project Settings</span> → <span class="clic">API Keys</span>, copia la <strong>Publishable key</strong> con su botón de copiar y pégala entre las comillas de <code>clavePublica: '',</code></li>
+      <li>Guarda con <kbd>Ctrl</kbd>+<kbd>S</kbd>.</li>
+    </ol>
+    <p>Tiene que quedar así (con tu clave en lugar de los puntos):</p>
+    <div class="codigo"><pre><code data-plantilla="export const CONFIG = {
+  url: '«url_supabase»',
+  clavePublica: 'sb_publishable_…',
+};"></code></pre></div>
+    <div class="caja seguro"><span class="caja-titulo">🔒 Comprueba dos veces</span>La clave tiene que empezar por <code>sb_publishable_</code>. Si empieza por <code>sb_secret_</code>, o es una larga que pone <em>service_role</em>, es la equivocada: bórrala. Por si acaso, el CRM y la revisión de seguridad la rechazarían.</div>
+  </article>
+
+  <article class="paso" data-paso="7.3" data-titulo="Subir el cambio (rama y Pull Request)">
+    <div class="paso-cabecera"><h3><span class="paso-id">7.3</span>Subir el cambio a GitHub (tu primer Pull Request)</h3></div>
+    <p>Necesitas haber aceptado la invitación del paso 2.3. En el chat de Antigravity:</p>
+    <div class="codigo"><pre><code>He cambiado crm/config.js para conectar el CRM con Supabase (la clave es la publishable, que es pública). Crea una rama llamada configurar-crm con ese cambio, ejecuta npm run seguridad y npm test, y si todo sale bien haz commit con el mensaje "Conectar el CRM con Supabase" y push. Explícame cada paso y dame el enlace para abrir el Pull Request.</code></pre><button class="boton copiar" type="button">Copiar</button></div>
+    <ol>
+      <li>Antigravity te pedirá permiso para cada comando: léelo y acepta. Así ves cómo se trabaja con Git.</li>
+      <li>La primera vez que suba algo, Windows abrirá una ventana de GitHub: <span class="clic">Sign in with your browser</span> → en GitHub, el botón verde <span class="clic">Authorize…</span>. Es Git Credential Manager pidiendo permiso para usar tu cuenta.</li>
+      <li>Abre el enlace que te dé → botón verde <span class="clic">Create pull request</span> → rellena la plantilla brevemente → <span class="clic">Create pull request</span>.</li>
+      <li>Espera a que salgan las comprobaciones automáticas (✔ verdes, unos 2-3 minutos).</li>
+    </ol>
+    <div class="caja miguel"><span class="caja-titulo">🤝 Necesitas a Miguel</span>Pídele que revise y acepte el Pull Request <em>"Conectar el CRM con Supabase"</em>. Cuando lo haga, Cloudflare actualiza el CRM solo, en 1-2 minutos.</div>
+    <div class="caja otra"><span class="caja-titulo">⚠️ Si ves otra cosa</span><em>"Permission denied"</em> o <em>"403"</em> al subir: aún no has aceptado la invitación del paso 2.3, o Miguel no te ha añadido todavía.</div>
+  </article>
+
+  <article class="paso" data-paso="7.4" data-titulo="Tu archivo de claves .env.local">
+    <div class="paso-cabecera"><h3><span class="paso-id">7.4</span>Tu archivo de claves <code>.env.local</code></h3></div>
+    <p>Es el archivo donde Antigravity lee las claves para trabajar. Solo existe en tu ordenador y <strong>nunca</strong> se sube a GitHub. En la terminal de Antigravity:</p>
+    <div class="codigo"><pre><code>Copy-Item .env.example .env.local</code></pre><button class="boton copiar" type="button">Copiar</button></div>
+    <p>Abre <code>.env.local</code> en la lista de la izquierda y rellena así: sin espacios alrededor del <code>=</code> y sin comillas.</p>
+    <div class="codigo"><pre><code data-plantilla="SUPABASE_URL=«url_supabase»
+SUPABASE_PUBLISHABLE_KEY=sb_publishable_… (la misma del paso 7.2)
+AGENTE_EMAIL=«correo_agente»
+AGENTE_PASSWORD=… (cópiala de Bitwarden: «CRM Valentina – agente Antigravity»)
+SERPER_API_KEY=… (la consigues en el paso 7.5)"></code></pre></div>
+    <p>Guarda con <kbd>Ctrl</kbd>+<kbd>S</kbd>. Ahora comprueba que Git lo ignora:</p>
+    <div class="codigo"><pre><code>git status</code></pre><button class="boton copiar" type="button">Copiar</button></div>
+    <div class="caja ver"><span class="caja-titulo">✅ Deberías ver</span>Que <code>.env.local</code> <strong>no</strong> aparece en la lista. Está protegido por <code>.gitignore</code>.</div>
+    <div class="caja seguro"><span class="caja-titulo">🔒 Si aparece .env.local en la lista</span>No hagas commit. Para y avisa a Miguel.</div>
+  </article>
+
+  <article class="paso" data-paso="7.5" data-titulo="Tu clave de Serper (Google Maps)">
+    <div class="paso-cabecera"><h3><span class="paso-id">7.5</span>Sacar tu primera clave de API: Serper (Google Maps)</h3></div>
+    <ol>
+      <li>Entra en <a href="https://serper.dev/" target="_blank" rel="noopener noreferrer">serper.dev</a> → <span class="clic">Sign up</span>. Con tu cuenta de Google es lo más rápido.</li>
+      <li>Te regalan <strong>2.500 búsquedas</strong>. <strong>No pide tarjeta</strong>: si alguna vez te la pide, no la pongas y avisa.</li>
+      <li>Menú: <span class="clic">API Key</span> → copia la clave.</li>
+      <li>Pégala en <code>.env.local</code>, detrás de <code>SERPER_API_KEY=</code>, y guarda con <kbd>Ctrl</kbd>+<kbd>S</kbd>.</li>
+      <li>Guárdala también en Bitwarden como "Serper – API key".</li>
+    </ol>
+    <div class="caja porque"><span class="caja-titulo">💡 Qué acabas de hacer</span>Has "sacado" una API key: una llave que deja a tu programa usar el servicio de Serper a tu nombre. Quien la tenga gasta tus búsquedas. Por eso vive solo en <code>.env.local</code> y en Bitwarden. Si algún día se escapa, entras en serper.dev, la borras y creas otra. Más en <code>docs/03-aprende-apis.md</code>, o pídele a Antigravity <code>/explicar-api</code>.</div>
+  </article>
+
+  <article class="paso" data-paso="7.6" data-titulo="Comprobar las claves">
+    <div class="paso-cabecera"><h3><span class="paso-id">7.6</span>Comprobar que todo conecta</h3></div>
+    <div class="codigo"><pre><code>npm run probar-apis</code></pre><button class="boton copiar" type="button">Copiar</button></div>
+    <div class="caja ver"><span class="caja-titulo">✅ Deberías ver</span>Tres ✔: festivos, Supabase (<em>"conectado con la cuenta del agente"</em>) y Serper (<em>"clave configurada"</em>), y al final <strong>"Todo listo."</strong></div>
+    <p>Para probar Serper de verdad (gasta 1 búsqueda de las 2.500):</p>
+    <div class="codigo"><pre><code>npm run probar-apis -- --serper</code></pre><button class="boton copiar" type="button">Copiar</button></div>
+    <div class="caja otra"><span class="caja-titulo">⚠️ Si ves otra cosa</span>
+      <table>
+        <tr><th>Mensaje</th><th>Qué pasa</th></tr>
+        <tr><td>Faltan estas claves en .env.local</td><td>Algún nombre está mal escrito o vacío. Compáralo con el ejemplo del paso 7.4.</td></tr>
+        <tr><td>No he podido entrar… Invalid login credentials</td><td>El correo o la contraseña del agente no coinciden con los del paso 5.5.</td></tr>
+        <tr><td>existe pero no está en el equipo</td><td>Falta el paso 5.6 para el agente.</td></tr>
+        <tr><td>SUPABASE_URL tiene que ser algo como…</td><td>Revisa la dirección: <code>https://</code> + ID + <code>.supabase.co</code>, sin nada más.</td></tr>
+        <tr><td>Serper rechaza la clave</td><td>Cópiala de nuevo desde serper.dev → API Key.</td></tr>
+      </table>
+    </div>
+  </article>
+</section>
+
+<!-- =================================================================== -->
+<section class="tarea" id="t8" data-tarea="8" data-titulo="Prueba final">
+  <div class="tarea-cabecera"><span class="tarea-numero">8</span><div><h2>Prueba final: tu primer día</h2><span class="tarea-progreso"></span></div></div>
+  <p class="tarea-intro">Todo de verdad: entras en tu CRM y Antigravity busca tus primeros negocios.</p>
+
+  <article class="paso" data-paso="8.1" data-titulo="Entrar en tu CRM">
+    <div class="paso-cabecera"><h3><span class="paso-id">8.1</span>Entrar en tu CRM</h3></div>
+    <p>Cuando Miguel haya aceptado el Pull Request del paso 7.3, abre <a data-plantilla-href="«url_crm»" href="https://valentina-crm.pages.dev" target="_blank" rel="noopener noreferrer"><span data-plantilla="«url_crm»">tu CRM</span></a>. Si estaba abierto, recarga con <kbd>Ctrl</kbd>+<kbd>F5</kbd>.</p>
+    <ol>
+      <li>Escribe tu correo y la contraseña del paso 5.5 (la de "CRM Valentina – mi usuario").</li>
+      <li>Ábrelo también en el móvil y añádelo a la pantalla de inicio: en Chrome, menú ⋮ → <span class="clic">Añadir a pantalla de inicio</span>.</li>
+    </ol>
+    <div class="caja ver"><span class="caja-titulo">✅ Deberías ver</span>La pantalla <strong>Hoy</strong>, sin banda amarilla y vacía, porque aún no hay negocios.</div>
+    <div class="caja otra"><span class="caja-titulo">⚠️ Si ves otra cosa</span>
+      <ul>
+        <li><strong>Sigue la banda amarilla "Modo prueba":</strong> el Pull Request aún no está aceptado, o Cloudflare todavía está publicando. Espera 2 minutos y recarga.</li>
+        <li><strong>"Aún no tienes acceso":</strong> falta tu fila en el paso 5.6.</li>
+        <li><strong>"Correo o contraseña incorrectos":</strong> pulsa "He olvidado la contraseña" y te llegará un correo.</li>
+      </ul>
+    </div>
+  </article>
+
+  <article class="paso" data-paso="8.2" data-titulo="Tu primera búsqueda con Antigravity">
+    <div class="paso-cabecera"><h3><span class="paso-id">8.2</span>Tu primera búsqueda con Antigravity</h3></div>
+    <p>En el chat de Antigravity:</p>
+    <div class="codigo"><pre><code>/buscar-negocios floristerías en Algeciras</code></pre><button class="boton copiar" type="button">Copiar</button></div>
+    <p>Te explicará lo que va a hacer y te propondrá primero una prueba que no guarda nada. Acepta los comandos y lee lo que te cuenta.</p>
+    <div class="caja ver"><span class="caja-titulo">✅ Deberías ver</span>Una tabla de negocios <strong>sin web</strong> con su puntuación, y al final: <em>"✔ Guardado en el CRM: N nuevos…"</em></div>
+  </article>
+
+  <article class="paso" data-paso="8.3" data-titulo="Elegir tu primer candidato">
+    <div class="paso-cabecera"><h3><span class="paso-id">8.3</span>Elegir tu primer candidato en el CRM</h3></div>
+    <ol>
+      <li>En el CRM: <span class="clic">Negocios</span> → filtro <span class="clic">Nuevo</span>.</li>
+      <li>Abre el de más puntuación (★). Mira su ficha y pulsa <em>Ver en Maps</em>.</li>
+      <li>Si te gusta para hacerle una demo: <span class="clic">Etapa</span> → <span class="clic">Cualificado</span> → <span class="clic">Guardar</span>.</li>
+    </ol>
+    <div class="caja ver"><span class="caja-titulo">✅ Deberías ver</span>La etiqueta <strong>Cualificado</strong> en ese negocio.</div>
+  </article>
+
+  <article class="paso" data-paso="8.4" data-titulo="Tu plan del día">
+    <div class="paso-cabecera"><h3><span class="paso-id">8.4</span>Pedir tu plan del día</h3></div>
+    <div class="codigo"><pre><code>/plan-del-dia</code></pre><button class="boton copiar" type="button">Copiar</button></div>
+    <div class="caja ver"><span class="caja-titulo">✅ Deberías ver</span>Si es horario comercial y qué te toca hacer. Este será tu inicio de cada día.</div>
+  </article>
+</section>
+
+<!-- =================================================================== -->
+<section class="tarea" id="t9" data-tarea="9" data-titulo="Diseña a tu manera (prompting)">
+  <div class="tarea-cabecera"><span class="tarea-numero">9</span><div><h2>Diseña a tu manera: enseña a Antigravity tu gusto</h2><span class="tarea-progreso"></span></div></div>
+  <p class="tarea-intro">Los tres estilos de demo que vienen (clásico, editorial y vibrante) son <strong>solo un punto de partida</strong>. Si te parecen poco serios o "de dibujos animados", cámbialos o crea los tuyos. <strong>Tú decides el estilo de Mavie.</strong> Aquí aprendes a conseguir que la IA diseñe como tú quieres.</p>
+
+  <article class="paso" data-paso="9.1" data-titulo="Mini lección de prompting">
+    <div class="paso-cabecera"><h3><span class="paso-id">9.1</span>Mini lección: cómo se le pide algo a una IA</h3></div>
+    <p>Antigravity no adivina tu gusto: lo aprende de lo que le escribes (el <em>prompt</em>) y de lo que dejas guardado (tus <em>reglas</em>). Un buen prompt de diseño tiene 6 partes:</p>
+    <table>
+      <tr><th>Parte</th><th>Ejemplo</th></tr>
+      <tr><td>1. Rol</td><td>"Actúa como diseñadora web senior especializada en negocios locales."</td></tr>
+      <tr><td>2. Contexto</td><td>"Es un taller de Los Barrios; sus clientes tienen 35-60 años y buscan confianza."</td></tr>
+      <tr><td>3. Objetivo (uno)</td><td>"Quiero que la portada parezca la de un negocio serio."</td></tr>
+      <tr><td>4. Referencias</td><td>Una captura (<kbd>Windows</kbd>+<kbd>Mayús</kbd>+<kbd>S</kbd>, y la pegas en el chat) o un enlace, y <strong>qué</strong> te gusta de ella.</td></tr>
+      <tr><td>5. Lo que NO</td><td>"Nada de formas flotando, pegatinas ni letras gigantes. No toques los textos."</td></tr>
+      <tr><td>6. Cómo seguir</td><td>"Antes de cambiar nada, propón 3 paletas de color y 2 tipografías. Yo elijo."</td></tr>
+    </table>
+    <p><strong>Trucos que funcionan:</strong></p>
+    <ul>
+      <li>Pídele que te pregunte primero: "Hazme 5 preguntas para entender lo que quiero".</li>
+      <li>Una cosa cada vez: primero los colores, luego las letras, luego la portada.</li>
+      <li>Pide opciones, no una sola respuesta.</li>
+      <li>Corrige con precisión. No "no me gusta", sino "el título es demasiado grande: redúcelo un 30% y sin negrita".</li>
+      <li>Usa palabras de diseño: <em>minimalista, sobrio, editorial, cálido, mucho aire, contraste, tipografía con serifa / sin serifa, color de acento</em>.</li>
+      <li>Si se lía: "Para. Resume en 5 puntos lo que hemos decidido".</li>
+    </ul>
+    <p>Lección completa, con plantillas para copiar: <code>docs/07-prompting-diseno.md</code></p>
+  </article>
+
+  <article class="paso" data-paso="9.2" data-titulo="Escribir tu gusto en mi-estilo.md">
+    <div class="paso-cabecera"><h3><span class="paso-id">9.2</span>Guarda tu gusto para siempre (<code>mi-estilo.md</code>)</h3></div>
+    <p>El archivo <code>.agents/rules/mi-estilo.md</code> es <strong>tuyo</strong>. Lo que escribas ahí, Antigravity lo aplica <strong>siempre</strong> que diseñe, sin que tengas que repetirlo. Para rellenarlo hablando, pide en el chat:</p>
+    <div class="codigo"><pre><code>Hazme preguntas de una en una para rellenar .agents/rules/mi-estilo.md con mi gusto de diseño: sensación general, lo que me gusta, lo que no, webs de referencia y mi firma. Cuando terminemos, escribe el archivo y quita los ejemplos.</code></pre><button class="boton copiar" type="button">Copiar</button></div>
+    <p>Cada vez que algo te encante o te horrorice, díselo: <em>"Añade a mi-estilo.md que nunca quiero degradados"</em>.</p>
+  </article>
+
+  <article class="paso" data-paso="9.3" data-titulo="Ejercicio: mirada de directora de arte">
+    <div class="paso-cabecera"><h3><span class="paso-id">9.3</span>Ejercicio: mirada de directora de arte</h3></div>
+    <p>Pide una crítica sin cambiar nada todavía:</p>
+    <div class="codigo"><pre><code>Actúa como directora de arte exigente. Mira la demo demos/ejemplo-barberia en el móvil y en el ordenador (npm run ver-demos) y dime las 5 cosas que más la alejan de una web profesional, ordenadas de más a menos importante, teniendo en cuenta mi gusto de .agents/rules/mi-estilo.md. No cambies nada todavía.</code></pre><button class="boton copiar" type="button">Copiar</button></div>
+    <p>Lee la lista. ¿Estás de acuerdo? Lo importante es que <strong>tú</strong> decides qué se cambia.</p>
+  </article>
+
+  <article class="paso" data-paso="9.4" data-titulo="Crear tu propio estilo" data-opcional="1">
+    <div class="paso-cabecera"><h3><span class="paso-id">9.4</span>Crear tu propio estilo<span class="opcional">CUANDO QUIERAS</span></h3></div>
+    <p>Cuando tengas claro cómo quieres que sean las webs de Mavie:</p>
+    <div class="codigo"><pre><code>/crear-estilo Quiero un estilo para negocios serios (talleres, gestorías, clínicas). Tres palabras: profesional, limpio, de confianza. Referencias: [pega enlaces o capturas]. No quiero nada que parezca de dibujos animados.</code></pre><button class="boton copiar" type="button">Copiar</button></div>
+    <p>Antigravity te hará preguntas, te propondrá colores y letras, lo construirá y te lo enseñará. Con Git nada se pierde: siempre se puede volver atrás.</p>
+  </article>
+</section>
+
+<!-- =================================================================== -->
+<section class="tarea" id="t10" data-tarea="10" data-titulo="¡Terminado!">
+  <div class="tarea-cabecera"><span class="tarea-numero">🎉</span><div><h2>¡Terminado!</h2></div></div>
+
+  <div class="celebracion" role="status">🎉 ¡Lo has hecho! Todos los pasos completados. 🎉</div>
+
+  <div class="tarjeta final">
+    <h2>Un mensaje de Miguel</h2>
+    <div class="carta">
+      <p>Valentina:</p>
+      <p>Si estás leyendo esto, lo has conseguido. Y no es poca cosa: has preparado tu ordenador, GitHub, Antigravity, una base de datos con reglas de seguridad, la publicación en internet y tus primeras claves de API. Todo conectado y todo seguro. Hay gente que se dedica a esto y tarda semanas en entenderlo. Tú lo has hecho paso a paso.</p>
+      <p>Desde hoy no eres "la que me ayuda con las demos": eres la otra mitad de Mavie. Harvey busca y escribe solo, sí. Pero tú vas a hacer ese mismo trabajo con algo que ningún agente tiene: tu ojo, tus dibujos y tu forma de tratar a la gente. Cada web que diseñes llevará tu firma, y los negocios lo van a notar.</p>
+      <p>No hace falta correr. Treinta minutos al día cuentan. La primera demo será la que más cueste; la décima te saldrá sola. Si te atascas más de quince minutos, pregúntale a Antigravity, y si no, a mí. Para eso somos un equipo.</p>
+      <p><strong>Tu primera misión:</strong> elige un sector que te guste, busca diez negocios sin web y diseña tu primera demo, a tu manera. Yo la reviso el mismo día.</p>
+      <p>Estoy muy orgulloso de ti. Vamos a construir esto juntos.</p>
+      <p class="firma">— Miguel</p>
+    </div>
+  </div>
+
+  <div class="tarjeta">
+    <h2>Avisa a Miguel de que has terminado</h2>
+    <p>Este mensaje se prepara solo, con tu progreso y con lo que necesitas de él ahora. Revísalo y, si quieres, cámbialo en WhatsApp o en el correo antes de enviarlo:</p>
+    <div class="mensaje" id="mensaje-final"></div>
+    <div class="acciones">
+      <button class="boton boton-principal" type="button" id="copiar-final">Copiar mensaje</button>
+      <a class="boton boton-wa" id="wa-final" href="#" target="_blank" rel="noopener noreferrer">Enviar por WhatsApp</a>
+      <a class="boton" id="correo-final" href="#">Enviar por correo</a>
+    </div>
+  </div>
+</section>
+
+<p class="pie">Guía de puesta en marcha · CRM de Valentina · Mavie IA Solutions<br>
+Tus casillas se guardan solo en este navegador. <button class="boton" type="button" id="reiniciar">Empezar de cero</button></p>
+
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  'use strict';
+  var CLAVE = 'guia-valentina-crm-v1';
+  var estado = { hechos: {}, datos: {} };
+  try {
+    var guardado = JSON.parse(localStorage.getItem(CLAVE) || 'null');
+    if (guardado && typeof guardado === 'object') {
+      estado.hechos = guardado.hechos || {};
+      estado.datos = guardado.datos || {};
+    }
+  } catch (e) { /* sin almacenamiento: la guía funciona igual, sin guardar */ }
+
+  function guardar() {
+    try { localStorage.setItem(CLAVE, JSON.stringify(estado)); } catch (e) { /* nada */ }
+  }
+
+  function aviso(texto) {
+    var t = document.getElementById('toast');
+    t.textContent = texto;
+    t.classList.add('visible');
+    clearTimeout(aviso.temporizador);
+    aviso.temporizador = setTimeout(function () { t.classList.remove('visible'); }, 2200);
+  }
+
+  // ---------------------------------------------------------------- datos
+  var MARCADOR = {
+    nombre: 'TU NOMBRE', nombre_corto: 'Valentina', correo: 'TU-CORREO', github: 'TU-USUARIO-DE-GITHUB',
+    correo_miguel: 'CORREO-DE-MIGUEL', correo_agente: 'CORREO-DEL-AGENTE', url_supabase: 'https://TU-PROYECTO.supabase.co',
+    url_crm: 'https://valentina-crm.pages.dev', url_demos: 'https://mavie-demos.pages.dev'
+  };
+
+  function valorCampo(clave) {
+    var campo = document.querySelector('input[data-dato="' + clave + '"]');
+    var v = estado.datos[clave];
+    if (v === undefined && campo) v = campo.defaultValue;
+    return (v || '').trim();
+  }
+
+  function valor(clave) {
+    if (clave === 'nombre_corto') return (valorCampo('nombre').split(/\s+/)[0]) || MARCADOR.nombre_corto;
+    if (clave === 'correo_agente') {
+      var propio = valorCampo('correo_agente');
+      if (propio) return propio;
+      var correo = valorCampo('correo');
+      var arroba = correo.indexOf('@');
+      return arroba > 0 ? correo.slice(0, arroba).split('+')[0] + '+agente' + correo.slice(arroba) : MARCADOR.correo_agente;
+    }
+    if (clave === 'url_crm' || clave === 'url_demos' || clave === 'url_supabase') {
+      return (valorCampo(clave) || MARCADOR[clave]).replace(/\/+$/, '');
+    }
+    return valorCampo(clave) || MARCADOR[clave] || '';
+  }
+
+  function rellenar(plantilla) {
+    return plantilla.replace(/«([a-z_]+)»/g, function (_, clave) { return valor(clave); });
+  }
+
+  function pintarPlantillas() {
+    document.querySelectorAll('[data-plantilla]').forEach(function (el) {
+      el.textContent = rellenar(el.getAttribute('data-plantilla'));
+    });
+    document.querySelectorAll('[data-plantilla-href]').forEach(function (el) {
+      var url = rellenar(el.getAttribute('data-plantilla-href'));
+      if (/^https:\/\//.test(url)) el.setAttribute('href', url);
+    });
+    document.querySelectorAll('.paso, .tarjeta').forEach(function (bloque) {
+      var mensaje = bloque.querySelector('.mensaje[data-plantilla]');
+      var wa = bloque.querySelector('.enviar-wa');
+      if (mensaje && wa) wa.setAttribute('href', 'https://wa.me/?text=' + encodeURIComponent(mensaje.textContent));
+    });
+    var agente = document.getElementById('d-agente');
+    if (agente && !estado.datos.correo_agente) agente.placeholder = valor('correo_agente');
+    pintarMensajeFinal();
+  }
+
+  document.querySelectorAll('input[data-dato]').forEach(function (campo) {
+    var clave = campo.getAttribute('data-dato');
+    if (estado.datos[clave] !== undefined) campo.value = estado.datos[clave];
+    campo.addEventListener('input', function () {
+      estado.datos[clave] = campo.value.trim();
+      guardar();
+      pintarPlantillas();
+    });
+  });
+
+  // ---------------------------------------------------------------- pasos
+  var pasos = Array.prototype.slice.call(document.querySelectorAll('.paso[data-paso]'));
+  var tareas = Array.prototype.slice.call(document.querySelectorAll('.tarea[data-tarea]'));
+
+  pasos.forEach(function (paso) {
+    var id = paso.getAttribute('data-paso');
+    paso.id = 'paso-' + id.replace('.', '-');
+    var etiqueta = document.createElement('label');
+    etiqueta.className = 'marcar';
+    var casilla = document.createElement('input');
+    casilla.type = 'checkbox';
+    casilla.checked = Boolean(estado.hechos[id]);
+    casilla.setAttribute('aria-label', 'Paso ' + id + ' hecho');
+    etiqueta.appendChild(casilla);
+    etiqueta.appendChild(document.createTextNode('✓ Hecho'));
+    paso.querySelector('.paso-cabecera').appendChild(etiqueta);
+    casilla.addEventListener('change', function () {
+      estado.hechos[id] = casilla.checked;
+      guardar();
+      actualizar();
+      if (casilla.checked) aviso('¡Paso ' + id + ' hecho! 💪');
+    });
+  });
+
+  function pasosDe(tarea) {
+    return pasos.filter(function (p) { return tarea.contains(p); });
+  }
+
+  function obligatorios() {
+    return pasos.filter(function (p) { return !p.hasAttribute('data-opcional'); });
+  }
+
+  // Índice
+  var indice = document.getElementById('indice');
+  tareas.forEach(function (tarea) {
+    var lista = pasosDe(tarea);
+    if (!lista.length) return;
+    var li = document.createElement('li');
+    var a = document.createElement('a');
+    a.href = '#' + tarea.id;
+    var titulo = document.createElement('span');
+    titulo.textContent = tarea.getAttribute('data-tarea') + '. ' + tarea.getAttribute('data-titulo');
+    var cuenta = document.createElement('span');
+    cuenta.className = 'cuenta';
+    a.appendChild(titulo);
+    a.appendChild(cuenta);
+    li.appendChild(a);
+    indice.appendChild(li);
+    tarea._indice = { li: li, cuenta: cuenta };
+  });
+
+  function actualizar() {
+    var lista = obligatorios();
+    var hechos = lista.filter(function (p) { return estado.hechos[p.getAttribute('data-paso')]; }).length;
+    var total = lista.length;
+    var porcentaje = total ? Math.round((hechos / total) * 100) : 0;
+    document.getElementById('progreso-texto').textContent = hechos + ' de ' + total + ' pasos · ' + porcentaje + '%';
+    document.getElementById('barra-relleno').style.width = porcentaje + '%';
+    document.getElementById('barra').setAttribute('aria-valuenow', String(porcentaje));
+    document.getElementById('total-pasos').textContent = String(total);
+    document.getElementById('total-tareas').textContent = String(tareas.filter(function (t) { return pasosDe(t).length; }).length);
+
+    pasos.forEach(function (p) { p.classList.toggle('hecho', Boolean(estado.hechos[p.getAttribute('data-paso')])); });
+    tareas.forEach(function (tarea) {
+      var propios = pasosDe(tarea).filter(function (p) { return !p.hasAttribute('data-opcional'); });
+      if (!propios.length) return;
+      var n = propios.filter(function (p) { return estado.hechos[p.getAttribute('data-paso')]; }).length;
+      var completa = n === propios.length;
+      tarea.classList.toggle('completa', completa);
+      var texto = n + ' de ' + propios.length + (completa ? ' ✓' : '');
+      tarea.querySelector('.tarea-progreso').textContent = texto;
+      if (tarea._indice) {
+        tarea._indice.cuenta.textContent = texto;
+        tarea._indice.li.classList.toggle('completa', completa);
+      }
+    });
+
+    var siguiente = lista.filter(function (p) { return !estado.hechos[p.getAttribute('data-paso')]; })[0];
+    var enlace = document.getElementById('ir-siguiente');
+    if (siguiente) {
+      enlace.href = '#' + siguiente.id;
+      enlace.textContent = 'Siguiente: ' + siguiente.getAttribute('data-paso') + ' ↓';
+    } else {
+      enlace.href = '#t10';
+      enlace.textContent = '¡Ver el final! 🎉';
+    }
+    document.body.classList.toggle('terminado', total > 0 && hechos === total);
+    pintarMensajeFinal();
+  }
+
+  // ---------------------------------------------------------------- mensaje final
+  function pintarMensajeFinal() {
+    var caja = document.getElementById('mensaje-final');
+    if (!caja) return;
+    var lista = obligatorios();
+    var pendientes = lista.filter(function (p) { return !estado.hechos[p.getAttribute('data-paso')]; });
+    var hechos = lista.length - pendientes.length;
+    var lineas = [];
+    lineas.push(pendientes.length
+      ? '¡Hola Miguel! Llevo ' + hechos + ' de ' + lista.length + ' pasos de la guía de puesta en marcha del CRM.'
+      : '¡Hola Miguel! 🎉 He terminado la guía de puesta en marcha del CRM: ' + hechos + ' de ' + lista.length + ' pasos.');
+    lineas.push('');
+    lineas.push('🔗 Mi CRM: ' + valor('url_crm'));
+    lineas.push('🎨 Demos: ' + valor('url_demos'));
+    lineas.push('👩‍💻 Mi usuario de GitHub: ' + valor('github'));
+    lineas.push('');
+    lineas.push('Lo que necesito de ti ahora:');
+    var peticiones = [
+      'Acepta la invitación a Supabase (organización «Mavie IA Solutions»). Caduca en 24 h; si ya ha caducado, dímelo y te la reenvío.',
+      'Acepta la invitación a mi Cloudflare y comprueba que los dos proyectos (valentina-crm y mavie-demos) se publican bien.',
+      'Revisa y acepta mi Pull Request «Conectar el CRM con Supabase».',
+      'Termina de configurar el repositorio en GitHub: reglas de la rama main, Dependabot, Secret scanning y Push protection (docs/01-puesta-en-marcha.md, paso 5).',
+      'Entra en el CRM con tu usuario (te paso la contraseña por Bitwarden Send o usa «He olvidado la contraseña») y comprueba que ves el botón de aprobar demos.',
+      'Cuando puedas, conecta Harvey con mi CRM (docs/06-puente-harvey.md) y decide si tu ruta de puerta fría se salta los negocios que ya llevo yo.'
+    ];
+    peticiones.forEach(function (p, i) { lineas.push((i + 1) + '. ' + p); });
+    if (pendientes.length) {
+      lineas.push('');
+      lineas.push('Me he quedado en estos pasos (¿me ayudas?):');
+      pendientes.slice(0, 8).forEach(function (p) { lineas.push('- ' + p.getAttribute('data-paso') + ' ' + p.getAttribute('data-titulo')); });
+      if (pendientes.length > 8) lineas.push('- … y ' + (pendientes.length - 8) + ' más');
+    }
+    lineas.push('');
+    lineas.push('¡En cuanto me digas, empiezo con mi primera demo! 💜');
+    var texto = lineas.join('\n');
+    caja.textContent = texto;
+    document.getElementById('wa-final').setAttribute('href', 'https://wa.me/?text=' + encodeURIComponent(texto));
+    var correoMiguel = valorCampo('correo_miguel');
+    document.getElementById('correo-final').setAttribute('href', 'mailto:' + encodeURIComponent(correoMiguel) +
+      '?subject=' + encodeURIComponent('CRM Valentina: ¡configuración terminada!') + '&body=' + encodeURIComponent(texto));
+  }
+
+  // ---------------------------------------------------------------- copiar
+  function copiar(texto) {
+    function alternativo() {
+      var area = document.createElement('textarea');
+      area.value = texto;
+      area.setAttribute('readonly', '');
+      area.style.position = 'fixed';
+      area.style.opacity = '0';
+      document.body.appendChild(area);
+      area.select();
+      var ok = false;
+      try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+      document.body.removeChild(area);
+      aviso(ok ? 'Copiado ✔' : 'No he podido copiar: selecciónalo y usa Ctrl+C');
+    }
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(texto).then(function () { aviso('Copiado ✔'); }, alternativo);
+    } else {
+      alternativo();
+    }
+  }
+
+  document.querySelectorAll('.codigo .copiar').forEach(function (boton) {
+    boton.addEventListener('click', function () { copiar(boton.parentNode.querySelector('code').textContent); });
+  });
+  document.querySelectorAll('.copiar-mensaje').forEach(function (boton) {
+    boton.addEventListener('click', function () {
+      var bloque = boton.closest('.paso, .tarjeta');
+      copiar(bloque.querySelector('.mensaje').textContent);
+    });
+  });
+  document.getElementById('copiar-final').addEventListener('click', function () {
+    copiar(document.getElementById('mensaje-final').textContent);
+  });
+  document.getElementById('reiniciar').addEventListener('click', function () {
+    if (!window.confirm('¿Seguro? Se desmarcarán todas las casillas y se borrarán tus datos de esta guía.')) return;
+    estado = { hechos: {}, datos: {} };
+    guardar();
+    window.location.reload();
+  });
+
+  pintarPlantillas();
+  actualizar();
+})();
+</script>
+</body>
+</html>
