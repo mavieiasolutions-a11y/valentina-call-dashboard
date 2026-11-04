@@ -1,0 +1,253 @@
+<!doctype html>
+<!--
+  PLANTILLA "CLÁSICO" · Mavie IA Solutions
+  Cálida y elegante: panaderías, floristerías, peluquerías, pastelerías...
+
+  Esta página la rellena el script de demos: cambia los marcadores entre
+  dobles llaves (MARCA, NEGOCIO, SECTOR, ESLOGAN, TELEFONO_VISIBLE, TEL_URL,
+  WHATSAPP_URL, DIRECCION, MUNICIPIO, MAPA_URL, ANIO, SLUG) por los datos
+  del negocio.
+
+  Reglas para tocarla sin romper nada (las revisa `npm run seguridad`):
+  - Nada de JavaScript escrito dentro de este archivo ni atributos de evento
+    (onclick y similares): todo el JavaScript va en la carpeta js/ y se
+    carga desde la cabecera con el atributo defer.
+  - Nada de estilos en línea (atributo de estilo): todo va en css/estilos.css.
+  - Nada que cargue de otras webs (fuentes, imágenes, mapas): todo local.
+  - Los enlaces a WhatsApp y Google Maps llevan rel="noopener noreferrer".
+  - Textos honestos: nada de reseñas, precios ni premios inventados.
+-->
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="referrer" content="no-referrer">
+    <meta name="robots" content="noindex, nofollow">
+    <title>{{MARCA}} · {{ESLOGAN}}</title>
+    <meta name="description" content="{{ESLOGAN}}">
+    <meta name="theme-color" content="#fbf6ee">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="es_ES">
+    <meta property="og:title" content="{{MARCA}}">
+    <meta property="og:description" content="{{ESLOGAN}}">
+    <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+    <link rel="preload" href="vendor/fonts/fraunces-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/estilos.css">
+    <script src="vendor/gsap/gsap.min.js" defer></script>
+    <script src="vendor/gsap/ScrollTrigger.min.js" defer></script>
+    <script src="vendor/gsap/SplitText.min.js" defer></script>
+    <script src="vendor/gsap/DrawSVGPlugin.min.js" defer></script>
+    <script src="js/base.js" defer></script>
+    <script src="js/animaciones.js" defer></script>
+  </head>
+  <body data-demo="{{SLUG}}">
+    <a class="saltar" href="#contenido">Saltar al contenido</a>
+
+    <header class="cabecera" data-cabecera>
+      <div class="contenedor cabecera__fila">
+        <a class="cabecera__marca" href="#inicio">{{MARCA}}</a>
+        <nav class="menu" aria-label="Secciones de la página">
+          <ul role="list">
+            <li><a href="#servicios">Servicios</a></li>
+            <li><a href="#nosotros">Nosotros</a></li>
+            <li><a href="#horario">Horario</a></li>
+            <li><a href="#ubicacion">Dónde estamos</a></li>
+          </ul>
+        </nav>
+        <a class="boton boton--mini" href="{{TEL_URL}}" data-si="{{TEL_URL}}">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg>
+          Llamar
+        </a>
+        <details class="menu-movil" data-menu>
+          <summary aria-label="Abrir menú"><span class="menu-movil__icono" aria-hidden="true"></span></summary>
+          <nav aria-label="Secciones de la página (móvil)">
+            <ul role="list">
+              <li><a href="#servicios">Servicios</a></li>
+              <li><a href="#nosotros">Nosotros</a></li>
+              <li><a href="#horario">Horario</a></li>
+              <li><a href="#ubicacion">Dónde estamos</a></li>
+            </ul>
+          </nav>
+        </details>
+      </div>
+    </header>
+
+    <main id="contenido">
+      <!-- ============ PORTADA ============ -->
+      <section class="portada" id="inicio" aria-labelledby="titulo-portada">
+        <div class="contenedor portada__rejilla">
+          <div class="portada__texto">
+            <p class="etiqueta" data-anim="subir"><span>{{SECTOR}}</span><span>{{MUNICIPIO}}</span></p>
+            <h1 class="portada__titulo" id="titulo-portada" data-anim="titulo" data-ajustar>{{MARCA}}</h1>
+            <p class="portada__eslogan" data-anim="subir">{{ESLOGAN}}</p>
+            <div class="portada__acciones" data-anim="subir">
+              <a class="boton boton--principal" href="{{WHATSAPP_URL}}" data-si="{{WHATSAPP_URL}}" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20.5 11.6a8.4 8.4 0 0 1-12.3 7.5L3.5 20.5l1.4-4.5a8.4 8.4 0 1 1 15.6-4.4Z"/><path d="M8.5 11.5h.01M12 11.5h.01M15.5 11.5h.01" stroke-width="2.6"/></svg>
+                Escríbenos por WhatsApp<span class="visualmente-oculto"> (se abre en una pestaña nueva)</span>
+              </a>
+              <a class="boton boton--secundario" href="{{TEL_URL}}" data-si="{{TEL_URL}}">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg>
+                Llamar al {{TELEFONO_VISIBLE}}
+              </a>
+              <a class="boton boton--secundario" href="#ubicacion" data-no="{{TEL_URL}}">Ver dónde estamos</a>
+            </div>
+          </div>
+
+          <div class="portada__arco" data-anim="arco">
+            <!--
+              DIBUJO DE VALENTINA (la "firma" de la demo)
+              Para poner tu propio dibujo de la tableta:
+              1. En Inkscape, dibuja con la herramienta Lápiz (P) o Bézier (B):
+                 trazo (stroke) de color y SIN relleno (fill). Así el dibujo
+                 "se dibuja solo". Lo hecho con la pluma caligráfica son
+                 rellenos: se verá, pero aparecerá con un fundido.
+              2. Guárdalo como SVG normal (Archivo > Guardar como > SVG normal).
+              3. Ponlo en la carpeta originales/ de la demo con el nombre
+                 dibujo.svg y ejecuta: npm run imagenes -- demos/nombre-de-la-demo
+                 (o cópialo tú directamente a img/dibujo.svg).
+              Por defecto los trazos toman el color del estilo (clase
+              firma--recolorear). Quita esa clase para mantener tus colores.
+            -->
+            <figure class="firma firma--recolorear" data-dibujo="img/dibujo.svg">
+              <img src="img/dibujo.svg" alt="" width="400" height="440" decoding="async">
+            </figure>
+            <svg class="portada__estrella" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path d="M50 4C53 34 66 47 96 50C66 53 53 66 50 96C47 66 34 53 4 50C34 47 47 34 50 4Z" fill="currentColor"/></svg>
+          </div>
+        </div>
+        <svg class="portada__onda" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 40C240 80 480 0 720 30S1200 70 1440 20V80H0Z" fill="currentColor"/></svg>
+      </section>
+
+      <!-- ============ SERVICIOS ============ -->
+      <section class="seccion seccion--clara" id="servicios" aria-labelledby="titulo-servicios">
+        <div class="contenedor">
+          <header class="seccion__cabecera">
+            <p class="antetitulo" data-anim="subir">Lo que hacemos</p>
+            <h2 class="seccion__titulo" id="titulo-servicios" data-anim="subir">Servicios</h2>
+            <svg class="adorno" viewBox="0 0 240 24" aria-hidden="true" focusable="false"><path d="M4 12H96M144 12H236" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M120 2C122 9 125 10 132 12C125 14 122 15 120 22C118 15 115 14 108 12C115 10 118 9 120 2Z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/></svg>
+            <p class="seccion__intro" data-anim="subir">Una muestra de lo que encontrarás en {{MARCA}}. Son servicios de ejemplo: los cambiamos por los vuestros.</p>
+          </header>
+
+          <ul class="servicios" role="list">
+            <li class="servicio" data-anim="servicio">
+              <span class="servicio__numero" aria-hidden="true">I</span>
+              <svg class="servicio__icono" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path d="M24 6C26 17 31 22 42 24C31 26 26 31 24 42C22 31 17 26 6 24C17 22 22 17 24 6Z"/></svg>
+              <h3 class="servicio__titulo">Servicio principal</h3>
+              <p>Aquí va, en dos líneas, aquello por lo que os conocen: qué incluye y para quién es.</p>
+              <span class="chip">Ejemplo</span>
+            </li>
+            <li class="servicio" data-anim="servicio">
+              <span class="servicio__numero" aria-hidden="true">II</span>
+              <svg class="servicio__icono" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><rect x="8" y="10" width="32" height="30" rx="4"/><path d="M8 19h32M16 6v8M32 6v8M17 28l5 5 9-9"/></svg>
+              <h3 class="servicio__titulo">Encargos y reservas</h3>
+              <p>Cómo pedir con antelación: por teléfono, por WhatsApp o en el propio local.</p>
+              <span class="chip">Ejemplo</span>
+            </li>
+            <li class="servicio" data-anim="servicio">
+              <span class="servicio__numero" aria-hidden="true">III</span>
+              <svg class="servicio__icono" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path d="M24 41S7 31 7 18.5A8.5 8.5 0 0 1 24 14a8.5 8.5 0 0 1 17 4.5C41 31 24 41 24 41Z"/></svg>
+              <h3 class="servicio__titulo">Atención cercana</h3>
+              <p>Un espacio para contar cómo atendéis: con calma, consejo y trato de tú a tú.</p>
+              <span class="chip">Ejemplo</span>
+            </li>
+            <li class="servicio" data-anim="servicio">
+              <span class="servicio__numero" aria-hidden="true">IV</span>
+              <svg class="servicio__icono" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path d="M10 38C10 20 22 9 40 8C40 27 29 38 10 38Z"/><path d="M10 38L28 20"/></svg>
+              <h3 class="servicio__titulo">De temporada</h3>
+              <p>Para destacar lo nuevo o lo especial de cada época del año: novedades y fechas señaladas.</p>
+              <span class="chip">Ejemplo</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ============ SOBRE NOSOTROS ============ -->
+      <section class="seccion nosotros" id="nosotros" aria-labelledby="titulo-nosotros">
+        <div class="contenedor nosotros__rejilla">
+          <div class="nosotros__titular">
+            <p class="antetitulo" data-anim="subir">Sobre nosotros</p>
+            <h2 class="nosotros__frase" id="titulo-nosotros" data-anim="frase">Detrás de {{MARCA}} hay personas, oficio y ganas de hacer bien las cosas.</h2>
+            <svg class="nosotros__subrayado" viewBox="0 0 320 30" aria-hidden="true" focusable="false"><path d="M4 20C60 6 130 4 190 12C230 17 270 22 316 10" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
+          </div>
+          <div class="nosotros__texto">
+            <p data-anim="subir">Este es el lugar para contar vuestra historia: cómo empezó {{NEGOCIO}}, quién os atiende y qué hace especial cada visita.</p>
+            <p data-anim="subir">Lo escribimos juntos, con vuestras palabras y vuestras fotos. Nada de frases hechas.</p>
+            <p class="nota" data-anim="subir">Texto de ejemplo.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ HORARIO Y UBICACIÓN ============ -->
+      <section class="seccion seccion--arena" aria-label="Horario y ubicación">
+        <div class="contenedor dos-columnas">
+          <article class="tarjeta horario" id="horario" aria-labelledby="titulo-horario" data-anim="subir">
+            <svg class="tarjeta__icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></svg>
+            <h2 class="tarjeta__titulo" id="titulo-horario">Horario</h2>
+            <ul class="horario__lista" role="list">
+              <li data-dias="1-5"><span class="horario__dia" data-hoy>Lunes a viernes</span><span class="horario__horas">9:30 – 14:00 · 17:00 – 20:30</span></li>
+              <li data-dias="6"><span class="horario__dia" data-hoy>Sábado</span><span class="horario__horas">10:00 – 14:00</span></li>
+              <li data-dias="7"><span class="horario__dia" data-hoy>Domingo</span><span class="horario__horas">Cerrado</span></li>
+            </ul>
+            <p class="nota">Horario de ejemplo: lo ajustamos al vuestro.</p>
+          </article>
+
+          <article class="tarjeta ubicacion" id="ubicacion" aria-labelledby="titulo-ubicacion" data-anim="subir">
+            <svg class="tarjeta__icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11Z"/><circle cx="12" cy="10" r="2.4"/></svg>
+            <h2 class="tarjeta__titulo" id="titulo-ubicacion">Dónde estamos</h2>
+            <address class="ubicacion__datos">
+              <span class="ubicacion__direccion" data-si="{{DIRECCION}}">{{DIRECCION}}</span>
+              <span class="ubicacion__direccion" data-si="{{MUNICIPIO}}" data-no="{{DIRECCION}}">En {{MUNICIPIO}}</span>
+              <span class="ubicacion__direccion" data-no="{{DIRECCION}}{{MUNICIPIO}}">Aquí irán la dirección y el botón para llegar en Google Maps.</span>
+              <a class="ubicacion__telefono" href="{{TEL_URL}}" data-si="{{TEL_URL}}">{{TELEFONO_VISIBLE}}</a>
+            </address>
+            <div class="ubicacion__acciones">
+              <a class="boton boton--principal" href="{{MAPA_URL}}" data-si="{{MAPA_URL}}" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11Z"/><circle cx="12" cy="10" r="2.4"/></svg>
+                Cómo llegar<span class="visualmente-oculto"> (Google Maps, se abre en una pestaña nueva)</span>
+              </a>
+              <a class="boton boton--secundario" href="{{WHATSAPP_URL}}" data-si="{{WHATSAPP_URL}}" target="_blank" rel="noopener noreferrer">WhatsApp<span class="visualmente-oculto"> (se abre en una pestaña nueva)</span></a>
+            </div>
+            <svg class="ubicacion__mapa" viewBox="0 0 220 120" aria-hidden="true" focusable="false"><path d="M6 92C50 80 70 96 110 84S176 60 214 70M30 6C40 40 34 80 48 116M120 4C112 40 132 70 124 116M6 40C60 46 120 30 214 36"/><path d="M150 54s-14-12-14-24a14 14 0 0 1 28 0c0 12-14 24-14 24Z"/><circle cx="150" cy="30" r="4.5"/></svg>
+          </article>
+        </div>
+      </section>
+
+      <!-- ============ LLAMADA FINAL ============ -->
+      <section class="final" aria-labelledby="titulo-final">
+        <div class="contenedor final__caja">
+          <h2 class="final__titulo" id="titulo-final" data-anim="subir">¿Hablamos?</h2>
+          <p class="final__texto" data-anim="subir">Pregúntanos lo que necesites. Te respondemos encantados.</p>
+          <div class="final__acciones" data-anim="subir">
+            <a class="boton boton--claro" href="{{WHATSAPP_URL}}" data-si="{{WHATSAPP_URL}}" target="_blank" rel="noopener noreferrer">Escríbenos por WhatsApp<span class="visualmente-oculto"> (se abre en una pestaña nueva)</span></a>
+            <a class="boton boton--contorno-claro" href="{{TEL_URL}}" data-si="{{TEL_URL}}">Llamar al {{TELEFONO_VISIBLE}}</a>
+            <a class="boton boton--claro" href="#ubicacion" data-no="{{TEL_URL}}">Ver dónde estamos</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="pie">
+      <div class="contenedor pie__fila">
+        <p class="pie__marca">{{MARCA}}</p>
+        <nav aria-label="Pie de página">
+          <ul class="pie__enlaces" role="list">
+            <li><a href="#servicios">Servicios</a></li>
+            <li><a href="#nosotros">Nosotros</a></li>
+            <li><a href="#horario">Horario</a></li>
+            <li><a href="#ubicacion">Dónde estamos</a></li>
+          </ul>
+        </nav>
+        <p class="pie__legal">© {{ANIO}} {{MARCA}} · Web de muestra diseñada por Mavie IA Solutions</p>
+      </div>
+    </footer>
+
+    <a class="boton-flotante" href="{{WHATSAPP_URL}}" data-si="{{WHATSAPP_URL}}" target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp (se abre en una pestaña nueva)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20.5 11.6a8.4 8.4 0 0 1-12.3 7.5L3.5 20.5l1.4-4.5a8.4 8.4 0 1 1 15.6-4.4Z"/><path d="M8.5 11.5h.01M12 11.5h.01M15.5 11.5h.01" stroke-width="2.6"/></svg>
+    </a>
+
+    <aside class="aviso-demo" aria-label="Aviso sobre esta web">
+      <p>Web de muestra preparada por Mavie IA Solutions para {{NEGOCIO}}. Textos e imágenes de ejemplo.</p>
+    </aside>
+  </body>
+</html>

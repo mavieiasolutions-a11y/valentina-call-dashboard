@@ -1,0 +1,16 @@
+LICENCIAS DE TERCEROS INCLUIDAS EN ESTA DEMO
+===========================================
+
+GSAP 3.15.1 (carpeta vendor/gsap/: gsap.min.js, ScrollTrigger.min.js, SplitText.min.js, DrawSVGPlugin.min.js)
+  Copyright GreenSock (Webflow). Licencia estándar "no charge" de GSAP (GSAP Standard License):
+  https://gsap.com/standard-license
+  Uso gratuito, incluidos los plugins (ScrollTrigger, SplitText, DrawSVGPlugin...).
+  No se modifica el código: los archivos son los originales minificados.
+
+Fuentes tipográficas (carpeta vendor/fonts/): SIL Open Font License 1.1 (OFL)
+  https://openfontlicense.org
+  El texto completo de cada licencia está en vendor/fonts/OFL-<familia>.txt
+  - outfit (@fontsource/outfit): Copyright 2021 The Outfit Project Authors (https://github.com/Outfitio/Outfit-Fonts)
+  - dm-sans (@fontsource/dm-sans): Copyright 2014 The DM Sans Project Authors (https://github.com/googlefonts/dm-fonts) DMSans-Italic[opsz,wght].ttf: Copyright 2014 The DM Sans Project Authors (https://github.com/googlefonts/dm-fonts)
+
+Dibujos y decoraciones de img/: originales de Mavie IA Solutions.

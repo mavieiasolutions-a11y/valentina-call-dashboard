@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+  <title>Destello dibujado a mano</title>
+  <path d="M200 92C207 165 235 193 308 200C235 207 207 235 200 308C193 235 165 207 92 200C165 193 193 165 200 92Z"/>
+  <path d="M334 150C358 216 318 300 230 326C140 352 64 292 62 214C60 138 126 72 206 70C268 68 318 100 342 162"/>
+  <path d="M322 52C324 72 328 76 348 78C328 80 324 84 322 104C320 84 316 80 296 78C316 76 320 72 322 52Z" stroke-width="5"/>
+  <path d="M80 300C82 314 85 317 99 319C85 321 82 324 80 338C78 324 75 321 61 319C75 317 78 314 80 300Z" stroke-width="5"/>
+  <path d="M98 96L114 112M76 134L98 138M130 68L134 90" stroke-width="5"/>
+  <path d="M300 300L318 318M326 282L348 286" stroke-width="5"/>
+</svg>

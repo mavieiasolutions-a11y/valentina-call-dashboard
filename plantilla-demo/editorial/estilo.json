@@ -1,0 +1,21 @@
+{
+  "id": "editorial",
+  "nombre": "Editorial",
+  "descripcion": "Atrevido, como una portada de revista: fondo oscuro, letras enormes que suben letra a letra, cintas en movimiento y un sello giratorio con el dibujo a mano.",
+  "ideal_para": ["barbería", "bar", "estudio de tatuaje", "cervecería", "tienda de discos", "tienda de ropa", "restaurante", "estudio de fotografía"],
+  "fuentes": [
+    {
+      "paquete": "@fontsource/bricolage-grotesque",
+      "archivos": ["bricolage-grotesque-latin-700-normal.woff2", "bricolage-grotesque-latin-800-normal.woff2"]
+    },
+    {
+      "paquete": "@fontsource/playfair-display",
+      "archivos": ["playfair-display-latin-400-italic.woff2"]
+    },
+    {
+      "paquete": "@fontsource/space-grotesk",
+      "archivos": ["space-grotesk-latin-400-normal.woff2", "space-grotesk-latin-500-normal.woff2"]
+    }
+  ],
+  "gsap": ["gsap.min.js", "ScrollTrigger.min.js", "SplitText.min.js", "DrawSVGPlugin.min.js"]
+}

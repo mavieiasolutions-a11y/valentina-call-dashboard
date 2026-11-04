@@ -1,0 +1,325 @@
+/* ==========================================================================
+   BASE COMÚN DE TODAS LAS DEMOS (Mavie IA Solutions)
+   --------------------------------------------------------------------------
+   Este archivo se copia igual en todas las demos. Aquí solo hay:
+   - un "reset" moderno para que todos los navegadores empiecen igual,
+   - ayudas de accesibilidad (enlace para saltar, foco visible...),
+   - las piezas que comparten los tres estilos: el aviso de "web de muestra",
+     el botón flotante de WhatsApp y los bloques que se esconden solos
+     cuando falta un dato (teléfono, dirección...).
+   Los colores, fuentes y el diseño de cada estilo están en css/estilos.css.
+   Si quieres cambiar el aspecto de una demo, cambia estilos.css, no este.
+   ========================================================================== */
+
+/* ---------- Reset ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  overflow-x: hidden;
+  overflow-x: clip;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100svh;
+  line-height: 1.6;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  overflow-x: clip;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote,
+dl,
+dd,
+address {
+  margin: 0;
+}
+
+address {
+  font-style: normal;
+}
+
+/* :where() deja la especificidad a cero: así cualquier estilo puede
+   cambiar márgenes y rellenos de las listas sin pelearse con el reset. */
+:where(ul[role='list'], ol[role='list']) {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+img,
+svg,
+picture,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+a {
+  color: inherit;
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.18em;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+/* Cuando algo se marca como oculto, que se oculte de verdad. */
+[hidden] {
+  display: none !important;
+}
+
+/* Las anclas (#servicios...) no quedan tapadas por la cabecera fija. */
+[id] {
+  scroll-margin-top: var(--alto-cabecera, 5rem);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* ---------- Bloques que dependen de un dato ----------
+   data-si="valor"  -> el bloque solo se ve si el valor NO está vacío.
+   data-no="valor"  -> el bloque solo se ve si el valor SÍ está vacío.
+   Lo hace el propio CSS (funciona aunque falle el JavaScript).
+   Ejemplo: si el negocio no tiene teléfono, desaparece el botón "Llamar".
+   ------------------------------------------------------ */
+[data-si=''],
+[data-si^='{'],
+[data-no]:not([data-no='']):not([data-no^='{']) {
+  display: none !important;
+}
+
+/* ---------- Accesibilidad ---------- */
+.visualmente-oculto {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.saltar {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 1000;
+  padding: 0.75rem 1.1rem;
+  border-radius: 0.5rem;
+  background: var(--color-texto, #111);
+  color: var(--color-fondo, #fff);
+  font-weight: 600;
+  text-decoration: none;
+  transform: translateY(-200%);
+}
+
+.saltar:focus {
+  transform: none;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-foco, #1d5fd1);
+  outline-offset: 3px;
+}
+
+/* ---------- Aviso de web de muestra (obligatorio en todas las demos) ---------- */
+body {
+  padding-bottom: var(--alto-aviso, 3.4rem);
+}
+
+.aviso-demo {
+  position: fixed;
+  z-index: 90;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+  padding: 0.55rem 1rem calc(0.55rem + env(safe-area-inset-bottom, 0px));
+  background: var(--aviso-fondo, #161616);
+  color: var(--aviso-texto, #fafafa);
+  font-family: var(--fuente-texto, system-ui, sans-serif);
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.4;
+  text-align: center;
+  box-shadow: 0 -8px 24px -12px rgb(0 0 0 / 0.35);
+}
+
+.aviso-demo p {
+  max-width: 40rem;
+  margin: 0 auto;
+}
+
+@media (min-width: 48rem) {
+  body {
+    padding-bottom: 0;
+  }
+
+  .aviso-demo {
+    left: 1rem;
+    right: auto;
+    bottom: 1rem;
+    max-width: 25rem;
+    padding: 0.6rem 1.1rem 0.6rem 2.1rem;
+    border-radius: 1rem;
+    text-align: left;
+    box-shadow: 0 12px 30px -12px rgb(0 0 0 / 0.45);
+  }
+
+  .aviso-demo::before {
+    content: '';
+    position: absolute;
+    left: 0.95rem;
+    top: 50%;
+    width: 0.5rem;
+    height: 0.5rem;
+    margin-top: -0.25rem;
+    border-radius: 50%;
+    background: var(--aviso-punto, #f5c451);
+  }
+}
+
+/* ---------- Botón flotante de WhatsApp ---------- */
+.boton-flotante {
+  position: fixed;
+  z-index: 91;
+  right: 1rem;
+  bottom: calc(var(--alto-aviso, 3.4rem) + 0.85rem);
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  background: var(--flotante-fondo, #136c3a);
+  color: var(--flotante-texto, #fff);
+  box-shadow: 0 14px 28px -10px rgb(0 0 0 / 0.45);
+  transition:
+    transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1.2),
+    opacity 0.3s ease,
+    visibility 0.3s;
+}
+
+.boton-flotante svg {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+.boton-flotante:hover {
+  transform: scale(1.08);
+}
+
+@media (min-width: 48rem) {
+  .boton-flotante {
+    right: 1.5rem;
+    bottom: 1.5rem;
+  }
+}
+
+/* Con JavaScript, el botón aparece cuando ya no se ve la portada. */
+.js .boton-flotante:not(.visible) {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(1rem) scale(0.8);
+}
+
+/* Pieza invisible que usa base.js para medir títulos (data-ajustar). */
+.medidor-ajuste {
+  position: absolute;
+  top: 0;
+  left: 0;
+  visibility: hidden;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* ---------- Hueco del dibujo de Valentina (la "firma") ---------- */
+.firma {
+  position: relative;
+  color: var(--color-dibujo, currentColor);
+}
+
+.firma img,
+.firma svg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Mientras se carga el dibujo animado, no se enseña la versión fija. */
+.js-listo .firma:not(.firma--estatica) img {
+  opacity: 0;
+}
+
+/* Si la clase firma--recolorear está puesta, los trazos toman el color
+   del estilo (variable --color-dibujo). Quítala para respetar los colores
+   originales del dibujo. */
+.firma--recolorear svg [stroke]:not([stroke='none']) {
+  stroke: currentColor;
+}
+
+.firma--recolorear svg [fill]:not([fill='none']) {
+  fill: currentColor;
+}
+
+/* ---------- Animaciones: estado inicial ----------
+   Solo se esconde algo si el JavaScript ha cargado bien (clase js-listo en
+   <html>). Si el JavaScript falla, todo el contenido se ve sin animación. */
+.js-listo [data-anim] {
+  opacity: 0;
+}
+
+/* ---------- Usuarios que prefieren menos movimiento ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------- Impresión ---------- */
+@media print {
+  .aviso-demo,
+  .boton-flotante,
+  .cabecera {
+    position: static;
+  }
+
+  .js-listo [data-anim] {
+    opacity: 1 !important;
+  }
+}
