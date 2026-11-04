@@ -371,7 +371,7 @@ async function copiarVendor({ raiz, estilo, carpetaDemo }) {
     '===========================================',
     '',
     `GSAP ${versionGsap} (carpeta vendor/gsap/: ${archivosGsap.join(', ')})`,
-    "  Copyright GreenSock (Webflow). Licencia estándar \"no charge\" de GSAP (GSAP Standard License):",
+    "  Copyright GreenSock. Licencia estándar \"no charge\" de GSAP (GSAP Standard License):",
     '  https://gsap.com/standard-license',
     '  Uso gratuito, incluidos los plugins (ScrollTrigger, SplitText, DrawSVGPlugin...).',
     '  No se modifica el código: los archivos son los originales minificados.',

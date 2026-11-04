@@ -2,7 +2,7 @@ LICENCIAS DE TERCEROS INCLUIDAS EN ESTA DEMO
 ===========================================
 
 GSAP 3.15.1 (carpeta vendor/gsap/: gsap.min.js, ScrollTrigger.min.js, SplitText.min.js, DrawSVGPlugin.min.js)
-  Copyright GreenSock (Webflow). Licencia estándar "no charge" de GSAP (GSAP Standard License):
+  Copyright GreenSock. Licencia estándar "no charge" de GSAP (GSAP Standard License):
   https://gsap.com/standard-license
   Uso gratuito, incluidos los plugins (ScrollTrigger, SplitText, DrawSVGPlugin...).
   No se modifica el código: los archivos son los originales minificados.

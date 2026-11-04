@@ -9,6 +9,7 @@
 //
 // --marca es el nombre que TÚ eliges para la web (puede ser el del negocio u otro más bonito).
 import { parseArgs } from 'node:util';
+import { relative } from 'node:path';
 import { ejecutar } from './lib/entorno.mjs';
 import { conectarCRM, buscarNegocio } from './lib/crm.mjs';
 import { crearDemo, listarEstilos } from './lib/demo.mjs';
@@ -64,7 +65,7 @@ await ejecutar(async () => {
 
   const marca = op.marca?.trim() || negocio.nombre;
   const slug = op.slug ?? slugify(marca);
-  const { carpeta } = await crearDemo({
+  const { carpeta: absoluta } = await crearDemo({
     slug,
     estilo: op.estilo,
     datos: {
@@ -79,6 +80,7 @@ await ejecutar(async () => {
     },
   });
 
+  const carpeta = relative(process.cwd(), absoluta).split('\\').join('/');
   if (sb) {
     const { error } = await sb.from('demos').insert({ negocio_id: negocio.id, slug, marca, estilo: op.estilo });
     if (error) throw new Error(`La carpeta está creada pero el CRM no la ha apuntado: ${error.message}`);
